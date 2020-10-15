@@ -1,52 +1,59 @@
 import React from 'react';
-import styled from "styled-components";
+import { withRouter } from 'react-router-dom'
+import {connect} from 'react-redux'
+import {deleteDeck, populateDeckForm} from '../redux/actions'
 
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 5px;
-  border: 2px solid black;
-  border-radius: 5%;
-  margin: 10px;
-`
-const Footer = styled.p`
-  margin: 0;
-`
-const InnerWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`
-const MiddleWrapper = styled.div`
-display: flex;
-align-items: center;
-`
-const LinkWrapper = styled.a` 
-  text-decoration: none;
-`
 
-function DeckCard ({ deck }) {
-
+function DeckCard (props) {
+  
+  const editHandler = () => {
+    props.populateDeckForm(props.deck)
+    props.history.push('/profile/newdeck')
+  }
+  const deleteHandler = () => {
+    const token = localStorage.getItem('token')
+    props.deleteDeck(token, props.deck)
+  }
+  
+  
   return (
-    <LinkWrapper href={`/home/deck/${deck.id}`} >
-    <Wrapper>
-      <h3>{deck.title}</h3>
-      <MiddleWrapper>
-        <InnerWrapper>
+    <div className="card-wrapper">
+      <a href={`/home/deck/${props.deck.id}`} >
+      <h3>{props.deck.title}</h3>
+      <div className="middle-wrapper">
+        <div className="inner-wrapper">
           <p>Number of Cards</p>
-          <p>{deck.cards.length}</p>
-        </InnerWrapper>
-        <InnerWrapper>
+          <p>{props.deck.cards.length}</p>
+        </div>
+        <div className="inner-wrapper">
           <p>Category</p>
-          <p>{deck.category}</p>
-        </InnerWrapper>
-      </MiddleWrapper>
-      <Footer><footer><p>Made By: {deck.made_by}</p></footer></Footer>
-    </Wrapper>
-    </LinkWrapper>
+          <p>{props.deck.category}</p>
+        </div>
+      </div>
+      <p>Made By: {props.deck.made_by}</p>
+      </a>
+      {!props.profile ? null : 
+        <div>
+          <button onClick={()=>editHandler()} >Edit</button>
+          <button onClick={()=>deleteHandler()} >Delete</button>
+        </div>
+      }
+    </div>
   )
 }
 
-export default DeckCard
+const msp = (state) => {
+  return{
+    newDeck: state.newDeck
+  }
+}
+const mdp =(dispatch) => {
+  return{
+    deleteDeck: (token, deck) => dispatch(deleteDeck(token, deck)), 
+    populateDeckForm: (deck) => dispatch(populateDeckForm(deck))
+  }
+}
+
+
+export default connect(msp, mdp)(withRouter(DeckCard))

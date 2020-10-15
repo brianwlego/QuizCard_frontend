@@ -56,7 +56,6 @@ function QuizForm(props){
       newQuestion.choices_attributes[1].id = editChoiceIdTwo
       newQuestion.choices_attributes[2].id = editChoiceIdThree
       newQuestion.choices_attributes[3].id = editChoiceIdFour
-      console.log("inside submit handler/edit", newQuestion)
       props.editQuestion(token, newQuestion)
     } else {
       props.addQuestion(token, newQuestion)
@@ -101,14 +100,15 @@ function QuizForm(props){
 
   const renderQuestions = () => {
     return props.newQuestionArray.map(question => {
+      const index = props.newQuestionArray.indexOf(question) + 1
       return(
-        <QuestionNav key={props.newQuestionArray.indexOf(question)} >
-          <p>{props.newQuestionArray.indexOf(question) + 1}</p>
+        <div className="question-nav" key={index} >
+          <p>{question.content}</p>
           <div>
             <button onClick={()=>editHandler(question)} >Edit</button>
             <button onClick={()=>deleteHandler(question)} >Delete</button>
           </div>
-        </QuestionNav>
+        </div>
       )
     })
   }
@@ -123,17 +123,17 @@ function QuizForm(props){
         {props.newQuiz.img_url === null ? null : 
           <img alt="" src={props.newQuiz.img_url} />
         }
-        <NewQuizContent>
+        <div id="quiz-content">
           <h5>Title</h5>
           <StyledTitle>{props.newQuiz.title}</StyledTitle>
           <h5>Category</h5>
           <StyledTitle>{props.newQuiz.category}</StyledTitle>
-        </NewQuizContent>
+        </div>
       </div>
       <div id="questions" >
         {props.newQuestionArray.length > 0 ? renderQuestions() : null }
       </div>
-      <form onSubmit={questionSubmitHandler} >
+      <form onSubmit={questionSubmitHandler} id="question-form">
         <input 
           type="text"
           name="question-content"
@@ -184,29 +184,29 @@ function QuizForm(props){
       <>
         <h3>Create New Quiz</h3>
         <p>Start by inputing the Title and Category of your new quiz.</p>
-        <NewQuizForm onSubmit={quizSubmitHandler} >
-          <NewQuizInputs 
+        <div id="quiz-form" onSubmit={quizSubmitHandler} >
+          <input 
             type="text"
             name="title"
             placeholder="Title..."
             value={quizTitle}
             onChange={(e)=> setQuizTitle(e.target.value)}
           />
-          <NewQuizInputs 
+          <input 
             type="text"
             name="category"
             placeholder="Category..."
             value={quizCategory}
             onChange={(e)=> setQuizCategory(e.target.value)}
           />
-          <NewQuizInputs
+          <input
             type="file"
             name="quizImg" 
             accept="image/*" 
             onChange={(e)=>setQuizImg(e.target.files[0])}
           />
-          <NewQuizInputs type="submit" value="Create Quiz"/>
-        </NewQuizForm>
+          <input type="submit" value="Create Quiz"/>
+        </div>
       </> }
     </QuizFormWrapper>
   )
@@ -216,29 +216,9 @@ const QuizFormWrapper = styled.div`
   flex-direction: column;
   align-items: center;
 `
-const NewQuizForm = styled.form` 
-  display: flex;
-  flex-direction: column;
-  align-items:center;
-`
-const NewQuizInputs = styled.input` 
-  padding: 10px;
-`
-const NewQuizContent = styled.div` 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid lightgray;
-  border-radius: 4%;
-`
 const StyledTitle = styled.h3`
   margin: 5px 0;
   text-align: center;
-`
-const QuestionNav = styled.div` 
-  border: 1px solid black;
-  max-width: 8em;
-  height: auto;
 `
 
 const msp = (state) => {

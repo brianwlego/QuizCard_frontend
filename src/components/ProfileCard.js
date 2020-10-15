@@ -4,7 +4,6 @@ import img from "./blank-profile-picture.png"
 
 function ProfileCard({user}){
 
-  console.log(user)
 
   return(
     <CardWrapper>

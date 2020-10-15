@@ -2,37 +2,238 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+
+#app-wrapper {
+  justify-content: center;
+  height: 100%; 
+  position: relative;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+#user-created{
+  height: 300px;
+  max-width: 100%;
+  display: inline;
+  overflow: scroll;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+#favs{
+  height: 300px;
+  max-width: auto;
+  display: inline;
+  overflow: scroll;
+}
+/**************** HOME **************/
+#home-wrapper{
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+}
+#home-wrapper h1{
+  text-align: center;
+}
+#home-lists-wrapper{
+  display: flex;
+  justify-content: space-around;
+  width: 90%;
+}
+#quiz-list-wrapper{
+  text-align: center;
+  height: 30em;
+  width: 40%;
+  max-width: auto;
+  display: inline;
+  overflow: scroll;
+}
+#deck-list-wrapper{
+  text-align: center;
+  height: 30em;
+  width: 40%;
+  display: inline;
+  overflow: scroll;
 }
 
-.App-link {
-  color: #61dafb;
+/********** CARD CSS ******************/
+div.card-wrapper{
+  height: 33%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid black;
+  margin: 10px 0;
+}
+.card-wrapper h3{
+  margin: 0;
+  text-align: center;
+}
+.card-wrapper a{
+  text-decoration: none;
+}
+.card-wrapper p{
+  text-align: center;
+  margin: 0 0 3px 0;
+  font-size: smaller;
+}
+.inner-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.inner-wrapper p{
+  margin: 0;
+  text-align: center;
+  font-size: small;
+}
+div.middle-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+
+/********** DECK FROM CSS *************/
+div#cards{
+  display: flex;
+  align-items: center;
+  width: 90%;
+  margin: 1em 0;
+  max-height: 200px;
+  overflow: scroll;
+  background-color: rgb(219, 225, 225);
+  border: 1px solid lightgray;
+}
+#deck-content{
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid lightgray;
+  border-radius: 4%;
+}
+#deck-content h3{
+  margin: 5px 0;
+  text-align: center;
+}
+.card-nav{
+  text-align: center;
+  text-overflow: ellipsis;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 3%;
+  max-width: 8em;
+  max-height: 10em;
+  margin: 5px;
+  background-color: white;
+}
+#card-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+#card-form input{
+  padding: 5px;
+  margin: 5px 0;
+  width: 20em;
+}
+#deck-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#deck-form input{
+  padding: 5px;
+  margin: 5px 0;
+  width: 20em;
+}
+
+
+/********** QUIZ FORM CSS *************/
+div#questions{
+  display: flex;
+  align-items: center;
+}
+#quiz-content{
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid lightgray;
+  border-radius: 4%;
+}
+.question-nav{
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 3%;
+  max-width: 8em;
+  height: auto;
+  margin: 5px;
+}
+#question-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+#question-form input{
+  padding: 5px;
+  margin: 5px 0;
+  width: 20em;
+}
+#quiz-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#quiz-form input{
+  padding: 5px;
+  margin: 5px 0;
+  width: 20em;
+}
+
+/************* DECK SHOW ************/
+#deck-show-content{
+  background-color: lightblue;
+  padding: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 3%;
+}
+.deck-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/*********** QUIZ SHOW **************/
+.quiz-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#quiz-show-content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 3%;
+  padding: 2em;
+}
+
+/************** CHOICE ***************/
+.choice-wrapper{
+  width: 18em;
+  margin: 10px 0;
+  border: 1px solid black;
+}
+.choice-wrapper p{
+  margin: 3px 0;
+  padding-left: 1em;
 }

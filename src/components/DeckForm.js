@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {createDeck, addCards} from '../redux/actions'
+import {createDeck, addCard, editCard, deleteCard} from '../redux/actions'
 import styled from 'styled-components'
 import { useState } from 'react'
 
@@ -9,9 +9,12 @@ function DeckForm(props){
   const [deckCategory, setDeckCategory] = useState("")
   const [deckImg, setDeckImg] = useState("")
 
-  const [cardArray, setCardArray] = useState([])
   const [cardFront, setCardFront] = useState("")
   const [cardBack, setCardBack] = useState("")
+
+  const [editCard, setEditCard] = useState(false)
+  const [editCardId, setEditCardId] = useState("")
+
 
   const deckSubmitHandler = (e) => {
     e.preventDefault()
@@ -27,50 +30,57 @@ function DeckForm(props){
     setDeckCategory("")
   }
 
-  const addCardsHandler = () => {
-    const token = localStorage.getItem("token")
-    props.addCards(token, cardArray)
+  const createDeckHandler = () => {
+
     props.history.push('/profile')
+
   }
 
   const cardSubmit = (e) => {
+    const token = localStorage.getItem('token')
     e.preventDefault()
     const newCard = {
       front: cardFront,
       back: cardBack,
       deck_id: props.newDeck.id
     }
-    setCardArray([...cardArray, newCard])
+    if (editCard){
+      newCard.id = editCardId
+      props.editCard(token, newCard)
+    } else {
+      props.addCard(token, newCard)
+    }
     setCardFront("")
     setCardBack("")
+    setEditCard(false)
+    setEditCardId("")
   }
 
 
   const editHandler = (card) => {
     setCardFront(card.front)
     setCardBack(card.back)
-    const idx = cardArray.indexOf(card)
-    const newArray = [...cardArray]
-    newArray.splice(idx, 1)
-    setCardArray(newArray)
+    setEditCardId(card.id)
+    setEditCard(true)
   }
   const deleteHandler = (card) => {
-    const idx = cardArray.indexOf(card)
-    const newArray = [...cardArray]
-    newArray.splice(idx, 1)
-    setCardArray(newArray)
+    const token = localStorage.getItem("token")
+    props.deleteCard(token, card)
+    setCardFront("")
+    setCardBack("")
   }
 
   const renderCardArray = () => {
-    return cardArray.map(card => {
+    return props.newCardArray.map(card => {
+      const index = props.newCardArray.indexOf(card) + 1
       return(
-        <CardNav key={cardArray.indexOf(card)} >
-          <p>{cardArray.indexOf(card) + 1}</p>
+        <div className="card-nav" key={index} >
+          <p>Card {index}</p>
           <div>
             <button onClick={()=>editHandler(card)} >Edit</button>
             <button onClick={()=>deleteHandler(card)} >Delete</button>
           </div>
-        </CardNav>
+        </div>
       )
     })
   }
@@ -85,17 +95,17 @@ function DeckForm(props){
         {props.newDeck.img_url === null ? null : 
           <img alt="" src={props.newDeck.img_url} />
         }
-        <NewDeckContent>
+        <div id="deck-content">
           <h5>Title</h5>
-          <StyledTitle>{props.newDeck.title}</StyledTitle>
+          <h3>{props.newDeck.title}</h3>
           <h5>Category</h5>
-          <StyledTitle>{props.newDeck.category}</StyledTitle>
-        </NewDeckContent>
+          <h3>{props.newDeck.category}</h3>
+        </div >
       </div>
-      <CardNavWrapper>
-        {cardArray.length > 0 ? renderCardArray() : null}
-      </CardNavWrapper>
-        <form onSubmit={cardSubmit}>
+      <div id="cards">
+        {props.newCardArray.length > 0 ? renderCardArray() : null}
+      </div>
+        <form id="card-form" onSubmit={cardSubmit}>
           <input 
             type="text"
             name="front"
@@ -110,37 +120,37 @@ function DeckForm(props){
             value={cardBack}
             onChange={(e)=>setCardBack(e.target.value)}
           />
-          <input type="submit" value="Add Card To Deck" />
+          <input type="submit" value={editCard ? "Update Card" : "Add Card To Deck"} />
         </form>
-        <button onClick={addCardsHandler} >Finish Adding Cards & Create Deck</button>
+        <button onClick={createDeckHandler} >Finish Adding Cards & Create Deck</button>
       </>
       : 
       <>
         <h3>Create New FlashCard Deck</h3>
         <p>Start by inputing the Title and Category of your new deck.</p>
-        <NewDeckForm onSubmit={deckSubmitHandler} >
-          <NewDeckInputs 
+        <form id="deck-form" onSubmit={deckSubmitHandler} >
+          <input 
             type="text"
             name="title"
             placeholder="Title..."
             value={deckTitle}
             onChange={(e)=> setDeckTitle(e.target.value)}
           />
-          <NewDeckInputs 
+          <input 
             type="text"
             name="category"
             placeholder="Category..."
             value={deckCategory}
             onChange={(e)=> setDeckCategory(e.target.value)}
           />
-          <NewDeckInputs
+          <input
             type="file"
             name="deckImg" 
             accept="image/*" 
             onChange={(e)=>setDeckImg(e.target.files[0])}
           />
-          <NewDeckInputs type="submit" value="Create Deck"/>
-        </NewDeckForm>
+          <input type="submit" value="Create Deck"/>
+        </form>
       </> }
     </DeckFormWrapper>
   )
@@ -150,46 +160,23 @@ const DeckFormWrapper = styled.div`
   flex-direction: column;
   align-items: center;
 `
-const StyledTitle = styled.h3`
-  margin: 5px 0;
-  text-align: center;
-`
-const NewDeckForm = styled.form` 
-  display: flex;
-  flex-direction: column;
-  align-items:center;
-`
-const NewDeckInputs = styled.input` 
-  padding: 10px;
-`
-const NewDeckContent = styled.div` 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid lightgray;
-  border-radius: 4%;
-`
-const CardNav = styled.div`
-  border: 1px solid black;
-  max-width: 8em;
-  height: auto;
-`
-const CardNavWrapper = styled.div` 
-  display: flex;
-  align-items: center;
-  margin: 0 0 5px 0;
-`
+
 
 const msp = (state) => {
   return {
-    newDeck: state.newDeck
+    newDeck: state.newDeck, 
+    newCardArray: state.newCardArray
   }
 }
 const mdp = (dispatch) => {
   return {
     createDeck: (token, newDeck) => dispatch(createDeck(token, newDeck)),
-    addCards: (token, cardsArray) => dispatch(addCards(token, cardsArray))
+    addCard: (token, card) => dispatch(addCard(token, card)),
+    editCard: (token, card) => dispatch(editCard(token, card)),
+    deleteCard: (token, card) => dispatch(deleteCard(token, card))
   }
 }
+
+
 
 export default connect(msp, mdp)(DeckForm)

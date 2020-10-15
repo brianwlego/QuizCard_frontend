@@ -26,8 +26,8 @@ function App(props) {
 
 
   return (
-    <div>
-      {props.user !== "" ? <NavBar /> : null}
+    <div id="app-wrapper">
+      {props.user !== "" ? <NavBar />: null}
       <Route path="/home" component={Home}/>
       <Route path="/profile/newdeck" exact component={DeckForm}/>
       <Route path="/profile/newquiz" exact component={QuizForm}/>

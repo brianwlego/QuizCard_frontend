@@ -1,6 +1,6 @@
 
 
-export const loginUser = (userObj) => {
+export const loginUser = (userObj, history) => {
   return function(dispatch){
     const configObj = {
       method: 'POST',
@@ -13,10 +13,13 @@ export const loginUser = (userObj) => {
     fetch('http://localhost:3000/api/v1/login', configObj)
       .then(resp => resp.json())
       .then(data => {
-        localStorage.setItem("token", data.jwt);
-        dispatch({type: 'ADD_USER', payload: data.user})
-      // () => this.props.history.push(`/home`))
-      // .catch(() => this.setState(() => ({ error: true })))
+        if (data.message){
+          dispatch({type: 'ERROR', payload: data.message})
+        } else if (data.user){
+          localStorage.setItem("token", data.jwt);
+          dispatch({type: 'ADD_USER', payload: data.user})
+          history.push('/home')
+        }
       })
   }
 }
@@ -58,7 +61,10 @@ export const populateHome = (token) => {
   return function(dispatch){
     fetch('http://localhost:3000/api/v1/home', {
       method: 'GET',
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "Accepts": "application/json"
+      },
     })
     .then(resp=>resp.json())
     .then(data => {
@@ -95,22 +101,63 @@ export const createDeck = (token, newDeck) => {
   }
 }
 
-export const addCards = (token, cardsArray) => {
+export const addCard = (token, card) => {
   return function(dispatch){
-    const id = cardsArray[0].deck_id
+    const id = card.deck_id
     const configObj = {
       method: 'POST',
       headers: { "Authorization": `Bearer ${token}`,
       "Content-Type": "application/json",
       "Accepts": "application/json"
       },
-      body: JSON.stringify({cards: cardsArray})
+      body: JSON.stringify({card: card})
     }
     fetch(`http://localhost:3000/api/v1/decks/${id}/cards`, configObj)
     .then(resp=>resp.json())
-    .then(console.log)
+    .then(data => {
+      dispatch({type: 'ADD_CARD', payload: data.card})
+    })
   }
 }
+
+export const editCard = (token, card) => {
+  return function(dispatch){
+    const deckId = card.deck_id
+    const id = card.id
+    const configObj = {
+      method: 'PATCH',
+      headers: { "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json",
+      "Accepts": "application/json"
+      },
+      body: JSON.stringify({ card: card })
+    }
+    fetch(`http://localhost:3000/api/v1/decks/${deckId}/cards/${id}`, configObj)
+      .then(resp => resp.json())
+      .then(data => {
+        dispatch({type: 'EDIT_CARD', payload: data.card})
+      })
+  }
+}
+
+export const deleteCard = (token, card) => {
+  return function(dispatch){
+    const deckId = card.deck_id
+    const id = card.id
+    const configObj = {
+      method: 'DELETE',
+      headers: { "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json",
+      "Accepts": "application/json"
+      }
+    }
+    fetch(`http://localhost:3000/api/v1/decks/${deckId}/cards/${id}`, configObj)
+      .then(resp => resp.json())
+      .then(data => {
+        dispatch({type: 'DELETE_CARD', payload: card.id})
+      })
+    }
+  }
 
 export const createQuiz = (token, newQuiz) => {
   return function(dispatch){
@@ -161,7 +208,6 @@ export const editQuestion = (token, question) => {
     fetch(`http://localhost:3000/api/v1/quizzes/${quizId}/questions/${id}`, configObj)
       .then(resp => resp.json())
       .then(data => {
-        console.log(data)
         dispatch({type: 'EDIT_QUESTION', payload: data.question})
       })
   }
@@ -181,8 +227,61 @@ export const deleteQuestion = (token, question) => {
     fetch(`http://localhost:3000/api/v1/quizzes/${quizId}/questions/${id}`, configObj)
       .then(resp => resp.json())
       .then(data => {
-        console.log(data)
         dispatch({type: 'DELETE_QUESTION', payload: question.id})
       })
   }
+}
+
+export const deleteQuiz = (token, quiz) => {
+  return function(dispatch){
+    const configObj = {
+      method: 'DELETE',
+      headers: { "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json",
+      "Accepts": "application/json"
+      }
+    }
+    fetch(`http://localhost:3000/api/v1/quizzes/${quiz.id}`, configObj)
+      .then(resp => resp.json())
+      .then(data => {
+        dispatch({type: 'DELETE_QUIZ', payload: quiz})
+      })
+  }
+}
+
+export const deleteDeck = (token, deck) => {
+  return function(dispatch){
+    const configObj = {
+      method: 'DELETE',
+      headers: { "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json",
+      "Accepts": "application/json"
+      }
+    }
+    fetch(`http://localhost:3000/api/v1/decks/${deck.id}`, configObj)
+      .then(resp => resp.json())
+      .then(data => {
+        dispatch({type: 'DELETE_DECK', payload: deck})
+      })
+  }
+}
+
+export const populateQuizForm = (quiz) => {
+  return function(dispatch){
+    dispatch({type: 'POPULATE_QUIZ_FORM', payload: quiz})
+  }
+}
+
+export const populateDeckForm = (deck) => {
+  return function(dispatch){
+    dispatch({type: 'POPULATE_DECK_FORM', payload: deck})
+  }
+}
+
+export const addFav = (newFav) => {
+  return { type: 'FAVORITE', payload: newFav }
+}
+
+export const removeFav = (fav) => {
+  return { type: 'UNFAVORITE', payload: fav }
 }

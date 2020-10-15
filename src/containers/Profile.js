@@ -14,10 +14,11 @@ function Profile(props){
     props.populateProfile(token)
   }, [])
 
+
   const renderUserCreations = () => {
     return props.userCreations.map(creation => 
-      creation.questions ? <QuizCard key={creation.id} quiz={creation} /> 
-      : <DeckCard key={creation.id} deck={creation}/>
+      creation.questions ? <QuizCard key={creation.id} quiz={creation} profile={true} /> 
+      : <DeckCard key={creation.id} deck={creation} profile={true} />
     )
   }
 
@@ -37,6 +38,9 @@ function Profile(props){
     }
   }
 
+
+  
+
   return(
     <ProfileWrapper>
       <CardButtonWrapper>
@@ -51,11 +55,10 @@ function Profile(props){
         >Create New Quiz</button>
       </CardButtonWrapper>
       <ListWrapper>
+        <h3>Your Quizzes & FlashCard Decks</h3>
         <div id="user-created" >
-          <h3>Your Quizzes & FlashCard Decks</h3>
           {props.userCreations.length > 0 ? renderUserCreations() : 
-            <p>Get started making your own Quizzes and FlashCard Decks by clicking "Create Quiz" or "Create FlashCard Deck"</p>
-          }
+            <p>Get started making your own Quizzes and FlashCard Decks by clicking "Create Quiz" or "Create FlashCard Deck"</p>}
         </div>
         <div id="favs" >
           <h3>Your Favorited Quizzes & FlashCard Decks</h3>

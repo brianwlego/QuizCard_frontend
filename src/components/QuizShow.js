@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
 import Choice from './Choice'
+import {connect} from 'react-redux'
+import {addFav, removeFav} from '../redux/actions'
 
 
-function QuizShow(){
+function QuizShow(props){
   const [quiz, setQuiz] = useState({})
   const [questionNum, setQuestionNum] = useState(0)
   const [clicked, setClicked] = useState(false)
+  const [favQuiz, setFavQuiz] = useState(false)
 
   useEffect(()=>{
     const quizId = window.location.pathname.split('/')[3]
@@ -20,7 +22,12 @@ function QuizShow(){
       }
     })
     .then(resp=>resp.json())
-    .then(data => setQuiz(data.quiz))
+    .then(data => {
+      if(data.fav_quiz !== null){
+        setFavQuiz(data.fav_quiz)
+      }
+      setQuiz(data.quiz)
+    })
   }, [])
 
   const handleClick = () => {
@@ -49,17 +56,53 @@ function QuizShow(){
     }
   }
 
+  const favHandler = () => {
+    const token = localStorage.getItem('token')
+    if (!favQuiz){
+      const configObj = {
+        method: 'POST',
+        headers: { "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "Accepts": "application/json"
+        }
+      }
+      fetch(`http://localhost:3000/api/v1/quizzes/${quiz.id}/favorite`, configObj)
+      .then(resp=>resp.json())
+      .then(data => {
+        setFavQuiz(data.fav_quiz)
+        props.addFav(quiz)
+      })
+    } else {
+      const configObj = {
+        method: 'DELETE',
+        headers: { "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "Accepts": "application/json"
+        }
+      }
+      fetch(`http://localhost:3000/api/v1/quizzes/${quiz.id}/unfavorite`, configObj)
+      .then(resp=>resp.json())
+      .then(data => {
+        if(data.success){
+          setFavQuiz(false)
+          props.removeFav(quiz)
+        }
+      })
+    }
+  }
+
+
 
   return(
-    <div id="quiz-show-wrapper" >
+    <>
       {quiz.questions !== undefined ? 
-      <QuizWrapper>
+      <div className="quiz-wrapper">
         <h3>Category: {quiz.category}</h3>
         <h4>Title: {quiz.title}</h4>
-        <Content>
+        <div id="quiz-show-content">
           <h4>{quiz.questions[questionNum].content}</h4>
           {clicked ? renderAnswerChoices() : renderChoices()}
-        </Content>
+        </div>
         <div id="buttons-wrapper" >
           <button
             onClick={previous}
@@ -68,28 +111,23 @@ function QuizShow(){
             onClick={next}
           >next</button>
         </div>
-      </QuizWrapper>
+        <button onClick={favHandler}>{!favQuiz ? "Add This Quiz To Your Favorites" : "Remove This Quiz From Favorites"}</button>
+      </div>
       : 
-      <QuizWrapper>
+      <div className="quiz-wrapper" >
         Loading...
-      </QuizWrapper> }
-    </div>
+      </div> }
+    </>
   )
 }
 
-const QuizWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`
 
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid black;
-  border-radius: 3%;
-  padding: 2em;
-`
 
-export default QuizShow
+const mdp = (dispatch) => {
+  return {
+    addFav: (newFav) => dispatch(addFav(newFav)),
+    removeFav: (fav) => dispatch(removeFav(fav))
+  }
+}
+
+export default connect(null, mdp)(QuizShow)

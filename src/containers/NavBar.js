@@ -6,7 +6,6 @@ function NavBar(props){
 
   const logout = () => {
     localStorage.clear()
-    // props.history.push('/login')
   }
   const profile = () => {
     props.history.push('/profile')

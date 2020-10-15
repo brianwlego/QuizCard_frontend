@@ -5,22 +5,22 @@ import { loginUser, setSignUp } from '../redux/actions'
 function Login (props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const submitHandler = (e) => {
     e.preventDefault()
     const user = {
       email: email,
       password: password
     }
-    props.loginUser(user)
+    props.loginUser(user, props.history)
     setEmail("")
     setPassword("")
-    props.history.push(`/home`)
   }
 
 
   return(
     <div id="login">
+      {props.error !== "" ? <p>{props.error}</p> : null}
       <form onSubmit={submitHandler}>
         <input 
           type="text"
@@ -50,13 +50,13 @@ function Login (props) {
 const msp = (state) => {
   return {
     user: state.user,
-    signup: state.signup
+    signup: state.signup,
+    error: state.error
   }
 }
-
 const mdp = (dispatch) => {
   return {
-    loginUser: (user) => dispatch(loginUser(user)),
+    loginUser: (user, history) => dispatch(loginUser(user, history)),
     setSignUp: () => dispatch(setSignUp())
   }
 }

@@ -1,51 +1,60 @@
 import React from 'react';
-import styled from 'styled-components'
+import { withRouter } from 'react-router-dom'
+import {connect} from 'react-redux'
+import { deleteQuiz, populateQuizForm } from '../redux/actions'
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 5px;
-  border: 2px solid black;
-  border-radius: 5%;
-  margin: 10px;
-`
-const Footer = styled.p`
-  margin: 0;
-`
-const InnerWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`
-const MiddleWrapper = styled.div`
-display: flex;
-align-items: center;
-`
-const LinkWrapper = styled.a` 
-  text-decoration: none;
-`
 
-function QuizCard ({ quiz }) {
+function QuizCard (props) {
+
+  const editHandler = () => {
+    props.populateQuizForm(props.quiz)
+    props.history.push('/profile/newquiz')
+  }
+  const deleteHandler = () => {
+    const token = localStorage.getItem('token')
+    props.deleteQuiz(token, props.quiz)
+  }
+
+
 
   return (
-    <LinkWrapper href={`/home/quiz/${quiz.id}`} >
-    <Wrapper>
-      <h3>{quiz.title}</h3>
-      <MiddleWrapper>
-        <InnerWrapper>
-          <p>Number of Cards</p>
-          <p>{quiz.questions.length}</p>
-        </InnerWrapper>
-        <InnerWrapper>
+    <div className="card-wrapper">
+      <a href={`/home/quiz/${props.quiz.id}`} >
+      <h3>Quiz: {props.quiz.title}</h3>
+      <div className="middle-wrapper">
+        <div className="inner-wrapper" >
+          <p>Questions</p>
+          <p>{props.quiz.questions.length}</p>
+        </div >
+        <div className="inner-wrapper">
           <p>Category</p>
-          <p>{quiz.category}</p>
-        </InnerWrapper>
-      </MiddleWrapper>
-      <Footer><footer><p>Made By: {quiz.made_by}</p></footer></Footer>
-    </Wrapper>
-    </LinkWrapper>
+          <p>{props.quiz.category}</p>
+        </div >
+      </div>
+      <p>Made By: {props.quiz.made_by}</p>
+      </a>
+      {!props.profile ? null : 
+        <div>
+          <button onClick={()=>editHandler()}>Edit</button>
+          <button onClick={()=>deleteHandler()}>Delete</button>
+        </div>
+      }
+    </div>
   )
 }
 
-export default QuizCard
+const msp = (state) => {
+  return{
+    newQuiz: state.newQuiz,
+    newQuestionArray: state.newQuestionArray
+  }
+}
+const mdp = (dispatch) => {
+  return{
+    deleteQuiz: (token, quiz) => dispatch(deleteQuiz(token, quiz)), 
+    populateQuizForm: (quiz) => dispatch(populateQuizForm(quiz))
+  }
+}
+
+
+export default connect(msp, mdp)(withRouter(QuizCard))

@@ -1,29 +1,19 @@
-import React, {useState} from 'react'
-import styled from 'styled-components'
+import React from 'react'
 
 function Choice(props){
 
-
   return(
     <>
-    <ChoiceWrapper 
+    <div 
+    className="choice-wrapper"
     onClick={()=>props.handleClick()} 
     style={{backgroundColor: props.color}}
     >
-      <ChoiceContent>{props.choice.content}</ChoiceContent>
-    </ChoiceWrapper> 
+      <p>{props.choice.content}</p>
+    </div> 
     </>
   )
 }
 
-const ChoiceWrapper = styled.div`
-  width: 18em;
-  margin: 10px 0;
-  border: 1px solid black;
-`
-const ChoiceContent = styled.p`
-  margin: 3px 0;
-  padding-left: 1em;
-`
 
 export default Choice
