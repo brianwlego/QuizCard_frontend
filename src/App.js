@@ -33,7 +33,6 @@ function App(props) {
       <Route path="/profile/newquiz" exact component={QuizForm}/>
       <Route path="/profile" exact component={Profile}/>
       <Route path="/login" component={Login}/>
-      {props.signup ? <SignUpWithRouter /> : null }
     </div>
   );
 }

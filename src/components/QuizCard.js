@@ -14,12 +14,21 @@ function QuizCard (props) {
     const token = localStorage.getItem('token')
     props.deleteQuiz(token, props.quiz)
   }
+  const clickHandler = (e) => {
+    console.log(e.target)
+    if (e.target.className === "edit"){
+      editHandler()
+    } else if (e.target.className === "delete"){
+      deleteHandler()
+    } else{
+      props.history.push(`/home/quiz/${props.quiz.id}`)
+    }
+  }
 
 
 
   return (
-    <div className="card-wrapper">
-      <a href={`/home/quiz/${props.quiz.id}`} >
+    <div className="card-wrapper" onClick={clickHandler}>
       <h3>Quiz: {props.quiz.title}</h3>
       <div className="middle-wrapper">
         <div className="inner-wrapper" >
@@ -32,11 +41,10 @@ function QuizCard (props) {
         </div >
       </div>
       <p>Made By: {props.quiz.made_by}</p>
-      </a>
       {!props.profile ? null : 
-        <div>
-          <button onClick={()=>editHandler()}>Edit</button>
-          <button onClick={()=>deleteHandler()}>Delete</button>
+        <div id="card-button-wrapper">
+          <button className="edit">Edit</button>
+          <button className="delete">Delete</button>
         </div>
       }
     </div>

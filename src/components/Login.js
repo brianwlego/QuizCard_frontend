@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { connect } from 'react-redux';
 import { loginUser, setSignUp } from '../redux/actions'
+import SignUpWithRouter from './SignUp'
 
 function Login (props) {
   const [email, setEmail] = useState("");
@@ -21,6 +22,7 @@ function Login (props) {
   return(
     <div id="login">
       {props.error !== "" ? <p>{props.error}</p> : null}
+      <h2>Log In</h2>
       <form onSubmit={submitHandler}>
         <input 
           type="text"
@@ -40,9 +42,8 @@ function Login (props) {
           type="submit"
         />
       </form>
-      <div>
         <button onClick={props.setSignUp} >Click To Sign Up</button>
-      </div>
+      {props.signup ? <SignUpWithRouter /> : null }
     </div>
   )
 }

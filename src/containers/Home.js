@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import DeckCard from '../components/DeckCard';
 import QuizCard from '../components/QuizCard';
@@ -9,18 +9,15 @@ import { populateHome } from '../redux/actions'
 
 
 function Home (props) {
-  const [loading, setLoading] = useState(false)
   
   useEffect(()=>{
     const token = localStorage.getItem("token")
     props.populateHome(token)
-    setLoading(true)
   }, [])
   
   const renderQuizList = () => {
     return props.homeQuizzes.map(quiz => <QuizCard key={quiz.id} quiz={quiz} />)
   }
-  
   const renderDeckList = () => {
     return props.homeDecks.map(deck => <DeckCard key={deck.id} deck={deck} />)
   }

@@ -1,7 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {createDeck, addCard, editCard, deleteCard} from '../redux/actions'
-import styled from 'styled-components'
 import { useState } from 'react'
 
 function DeckForm(props){
@@ -29,13 +28,9 @@ function DeckForm(props){
     setDeckTitle("")
     setDeckCategory("")
   }
-
   const createDeckHandler = () => {
-
     props.history.push('/profile')
-
   }
-
   const cardSubmit = (e) => {
     const token = localStorage.getItem('token')
     e.preventDefault()
@@ -55,8 +50,6 @@ function DeckForm(props){
     setEditCard(false)
     setEditCardId("")
   }
-
-
   const editHandler = (card) => {
     setCardFront(card.front)
     setCardBack(card.back)
@@ -69,7 +62,6 @@ function DeckForm(props){
     setCardFront("")
     setCardBack("")
   }
-
   const renderCardArray = () => {
     return props.newCardArray.map(card => {
       const index = props.newCardArray.indexOf(card) + 1
@@ -88,7 +80,7 @@ function DeckForm(props){
 
 
   return(
-    <DeckFormWrapper>
+    <div id="deck-form-wrapper">
       {props.newDeck !== "" ? 
       <>
       <div id="new-deck-wrapper" >
@@ -152,15 +144,9 @@ function DeckForm(props){
           <input type="submit" value="Create Deck"/>
         </form>
       </> }
-    </DeckFormWrapper>
+    </div>
   )
 }
-const DeckFormWrapper = styled.div` 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`
-
 
 const msp = (state) => {
   return {

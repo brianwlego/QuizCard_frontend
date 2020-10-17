@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {signUp} from '../redux/actions'
+import {signUp, setSignUp} from '../redux/actions'
 
 function SignUp (props){
   const [first_name, setFirstName] = useState('')
@@ -27,59 +27,69 @@ function SignUp (props){
     setProfilePicture('')
     props.history.push('/home')
   }
+  const closeSignup = (e) => {
+    if (e.target.id === "sign-up-modal"){
+      props.setSignUp()
+    }
+  }
 
 
   return(
-    <div id="sign-up">
-      <form onSubmit={submitHandler}>
-        <input 
-          type="text"
-          name="first_name"
-          placeholder="First Name..."
-          value={first_name}
-          onChange={(e)=>setFirstName(e.target.value)}
-        />
-        <input 
-          type="text"
-          name="last_name"
-          placeholder="Last Name..."
-          value={last_name}
-          onChange={(e)=>setLastName(e.target.value)}
-        />
-        <input 
-          type="text"
-          name="email"
-          placeholder="Email..."
-          value={email}
-          onChange={(e)=>setEmail(e.target.value)}
-        />
-        <input 
-          type="text"
-          name="password"
-          placeholder="Password..."
-          value={password}
-          onChange={(e)=>setPassword(e.target.value)}
-        />
-        <input 
-        type="file"
-        name="profile_picture" 
-        accept="image/*" 
-        onChange={(e)=>setProfilePicture(e.target.files[0])}
-        />
-        <input type="submit" value="Sign Up" />
-      </form>
+    <div id="sign-up-modal" onClick={closeSignup}>
+      <div id="sign-up">
+        <h3>Sign Up</h3>
+        <form onSubmit={submitHandler}>
+          <input 
+            type="text"
+            name="first_name"
+            placeholder="First Name..."
+            value={first_name}
+            onChange={(e)=>setFirstName(e.target.value)}
+          />
+          <input 
+            type="text"
+            name="last_name"
+            placeholder="Last Name..."
+            value={last_name}
+            onChange={(e)=>setLastName(e.target.value)}
+          />
+          <input 
+            type="text"
+            name="email"
+            placeholder="Email..."
+            value={email}
+            onChange={(e)=>setEmail(e.target.value)}
+          />
+          <input 
+            type="text"
+            name="password"
+            placeholder="Password..."
+            value={password}
+            onChange={(e)=>setPassword(e.target.value)}
+          />
+          <input 
+          type="file"
+          name="profile_picture" 
+          accept="image/*" 
+          onChange={(e)=>setProfilePicture(e.target.files[0])}
+          />
+          <input type="submit" value="Sign Up" />
+        </form>
+      </div>
     </div>
   )
 }
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user
+    user: state.user,
+    signup: state.signup
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    signUp: (newUser) => dispatch(signUp(newUser))
+    signUp: (newUser) => dispatch(signUp(newUser)),
+    setSignUp: () => dispatch(setSignUp())
   }
 }
 

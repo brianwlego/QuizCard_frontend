@@ -15,11 +15,19 @@ function DeckCard (props) {
     const token = localStorage.getItem('token')
     props.deleteDeck(token, props.deck)
   }
+  const clickHandler = (e) => {
+    if (e.target.className === "edit"){
+      editHandler()
+    } else if (e.target.className === "delete"){
+      deleteHandler()
+    } else{
+      props.history.push(`/home/deck/${props.deck.id}`)
+    }
+  }
   
   
   return (
-    <div className="card-wrapper">
-      <a href={`/home/deck/${props.deck.id}`} >
+    <div className="card-wrapper" onClick={clickHandler}>
       <h3>{props.deck.title}</h3>
       <div className="middle-wrapper">
         <div className="inner-wrapper">
@@ -32,11 +40,10 @@ function DeckCard (props) {
         </div>
       </div>
       <p>Made By: {props.deck.made_by}</p>
-      </a>
       {!props.profile ? null : 
         <div>
-          <button onClick={()=>editHandler()} >Edit</button>
-          <button onClick={()=>deleteHandler()} >Delete</button>
+          <button className="edit">Edit</button>
+          <button className="delete" >Delete</button>
         </div>
       }
     </div>

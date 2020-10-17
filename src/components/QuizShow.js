@@ -9,6 +9,7 @@ function QuizShow(props){
   const [questionNum, setQuestionNum] = useState(0)
   const [clicked, setClicked] = useState(false)
   const [favQuiz, setFavQuiz] = useState(false)
+  // const [shuffle, setShuffle] = useState(true)
 
   useEffect(()=>{
     const quizId = window.location.pathname.split('/')[3]
@@ -35,14 +36,24 @@ function QuizShow(props){
       setClicked(true)
     } 
   }
-
+  const shuffle = (array) => {
+    let currentIndex = array.length, temporaryValue, randomIndex;
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+    return array;
+  }
   const renderChoices = () => {
-    return quiz.questions[questionNum].choices.map(choice => <Choice key={choice.id} choice={choice} handleClick={handleClick} color={"lightgrey"}/> )
+    const choices = quiz.questions[questionNum].choices
+    return shuffle(choices).map(choice => <Choice key={choice.id} choice={choice} handleClick={handleClick} styling='choice-wrapper'/> )
   }
   const renderAnswerChoices = () => {
-    return quiz.questions[questionNum].choices.map(choice => <Choice key={choice.id} choice={choice} handleClick={handleClick} color={choice.answer ? "lightgreen" : "red"}/> )
+    return quiz.questions[questionNum].choices.map(choice => <Choice key={choice.id} choice={choice} handleClick={handleClick} styling={choice.answer ? "right-answer" : "wrong-answer"} /> )
   }
-
   const next = () => {
     if(questionNum <= quiz.questions.length - 2){
       setQuestionNum(questionNum + 1)
@@ -55,7 +66,6 @@ function QuizShow(props){
       setClicked(false)
     }
   }
-
   const favHandler = () => {
     const token = localStorage.getItem('token')
     if (!favQuiz){
@@ -90,6 +100,7 @@ function QuizShow(props){
       })
     }
   }
+  // const questions = shuffle(quiz.questions) 
 
 
 
@@ -103,10 +114,11 @@ function QuizShow(props){
           <h4>{quiz.questions[questionNum].content}</h4>
           {clicked ? renderAnswerChoices() : renderChoices()}
         </div>
-        <div id="buttons-wrapper" >
+        <div id="quiz-buttons-wrapper" >
           <button
             onClick={previous}
           >previous</button>
+          <p>{questionNum + 1}/{quiz.questions.length}</p>
           <button
             onClick={next}
           >next</button>
@@ -120,8 +132,6 @@ function QuizShow(props){
     </>
   )
 }
-
-
 
 const mdp = (dispatch) => {
   return {

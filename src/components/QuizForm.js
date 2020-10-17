@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import {connect} from 'react-redux'
 import {createQuiz, addQuestion, editQuestion, deleteQuestion} from '../redux/actions'
-import styled from 'styled-components'
 
 
 function QuizForm(props){
@@ -116,7 +115,7 @@ function QuizForm(props){
 
 
   return(
-    <QuizFormWrapper>
+    <div id="quiz-form-wrapper">
       {props.newQuiz !== "" ? 
         <>
         <div id="quiz-content-wrapper" >
@@ -125,9 +124,9 @@ function QuizForm(props){
         }
         <div id="quiz-content">
           <h5>Title</h5>
-          <StyledTitle>{props.newQuiz.title}</StyledTitle>
+          <h3>{props.newQuiz.title}</h3>
           <h5>Category</h5>
-          <StyledTitle>{props.newQuiz.category}</StyledTitle>
+          <h3>{props.newQuiz.category}</h3>
         </div>
       </div>
       <div id="questions" >
@@ -208,18 +207,10 @@ function QuizForm(props){
           <input type="submit" value="Create Quiz"/>
         </div>
       </> }
-    </QuizFormWrapper>
+    </div>
   )
 }
-const QuizFormWrapper = styled.div` 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`
-const StyledTitle = styled.h3`
-  margin: 5px 0;
-  text-align: center;
-`
+
 
 const msp = (state) => {
   return {
