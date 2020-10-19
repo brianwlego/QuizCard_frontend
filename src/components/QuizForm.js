@@ -1,14 +1,18 @@
 import React, { useState } from 'react'
 import {connect} from 'react-redux'
-import {createQuiz, addQuestion, editQuestion, deleteQuestion} from '../redux/actions'
+import {createQuiz, editQuiz, deleteQuiz, addQuestion, editQuestion, deleteQuestion} from '../redux/actions'
 
 
 function QuizForm(props){
   const [quizTitle, setQuizTitle] = useState("")
   const [quizCategory, setQuizCategory] = useState("")
   const [quizImg, setQuizImg] = useState("")
+  const [photoURL, setPhotoURL] = useState("")
+
+  const [editQuizContent, setEditQuizContent] = useState(false)
 
   const [questionContent, setQuestionContent] = useState("")
+  const [questionNum, setQuestionNum] = useState(props.newQuestionArray.length > 0 ? props.newQuestionArray.length + 1 : 1)
   
   const [choiceOne, setChoiceOne] = useState("")
   const [choiceTwo, setChoiceTwo] = useState("")
@@ -29,14 +33,20 @@ function QuizForm(props){
     let formData = new FormData()
     formData.append('quiz[title]', quizTitle)
     formData.append('quiz[category]', quizCategory)
-    formData.append('img', quizImg)
-
-    props.createQuiz(token, formData)
+    if (editQuizContent){
+      const quizId = props.newQuiz.id
+      formData.append('newimg', quizImg)
+      props.editQuiz(token, formData, quizId)
+      setEditQuizContent(false)
+    } else {
+      formData.append('img', quizImg)
+      props.createQuiz(token, formData)
+    }
     setQuizImg("")
     setQuizTitle("")
     setQuizCategory("")
+    setPhotoURL("")
   }
-
   const questionSubmitHandler = (e) => {
     const token = localStorage.getItem("token")
     e.preventDefault()
@@ -47,7 +57,7 @@ function QuizForm(props){
       {content: choiceFour, answer: answer === "four" ? true : false}
     ]
     const newQuestion = {
-      content: questionContent, quiz_id: props.newQuiz.id, choices_attributes: choices
+      content: questionContent, num: questionNum, quiz_id: props.newQuiz.id, choices_attributes: choices
     }
     if (editQuestion === true){
       newQuestion.id = editQuestionId
@@ -56,8 +66,10 @@ function QuizForm(props){
       newQuestion.choices_attributes[2].id = editChoiceIdThree
       newQuestion.choices_attributes[3].id = editChoiceIdFour
       props.editQuestion(token, newQuestion)
+      setQuestionNum(props.newQuestionArray.length + 1)
     } else {
       props.addQuestion(token, newQuestion)
+      setQuestionNum(questionNum + 1)
     }
     setQuestionContent("")
     setChoiceOne("")
@@ -68,7 +80,6 @@ function QuizForm(props){
     setEditQuestion(false)
     setEditQuestionId("")
   }
-
   const editHandler = (question) => {
     setEditQuestion(true)
     setEditQuestionId(question.id)
@@ -78,6 +89,7 @@ function QuizForm(props){
     setEditChoiceIdFour(question.choices[3].id)
 
     setQuestionContent(question.content)
+    setQuestionNum(question.num)
     setChoiceOne(question.choices[0].content)
     setChoiceTwo(question.choices[1].content)
     setChoiceThree(question.choices[2].content)
@@ -96,12 +108,10 @@ function QuizForm(props){
   const finishQuiz = () => {
     props.history.push('/profile')
   }
-
   const renderQuestions = () => {
-    return props.newQuestionArray.map(question => {
-      const index = props.newQuestionArray.indexOf(question) + 1
+    return props.newQuestionArray.sort((a, b) => a.num - b.num).map(question => {
       return(
-        <div className="question-nav" key={index} >
+        <div className="question-nav" key={question.id} >
           <p>{question.content}</p>
           <div>
             <button onClick={()=>editHandler(question)} >Edit</button>
@@ -111,24 +121,82 @@ function QuizForm(props){
       )
     })
   }
-
+  const handleFile = (e) => {
+    const file = e.target.files[0]
+    const fileReader = new FileReader()
+    fileReader.onloadend = () => {
+      setQuizImg(file)
+      setPhotoURL(fileReader.result)
+    }
+    if (file){
+      fileReader.readAsDataURL(file)
+    }
+  }
+  const renderQuizForm = () => {
+    return (
+      <form id="quiz-form" onSubmit={quizSubmitHandler} >
+          <input 
+            type="text"
+            name="title"
+            placeholder="Title..."
+            value={quizTitle}
+            onChange={(e)=> setQuizTitle(e.target.value)}
+          />
+          <input 
+            type="text"
+            name="category"
+            placeholder="Category..."
+            value={quizCategory}
+            onChange={(e)=> setQuizCategory(e.target.value)}
+          />
+          <input
+            id="quizfile"
+            type="file"
+            name="quizImg" 
+            accept="image/*" 
+            hidden
+            onChange={(e)=>handleFile(e)}
+          />
+          <label id="form-file-button" for="quizfile">{props.newQuiz === "" ? "Select Quiz Image" : "Change Image" }</label>
+          {photoURL !== "" ? <img id="photo-preview" src={photoURL} /> : props.newQuiz !== "" ? <img id="photo-preview" src={props.newQuiz.img_url} /> : null}
+          <input type="submit" value={props.newQuiz === "" ? "Create Quiz" : "Update Quiz"}/>
+        </form>
+    )
+  }
+  const editQuiz = () => {
+    setQuizTitle(props.newQuiz.title)
+    setQuizCategory(props.newQuiz.category)
+    setEditQuizContent(true)
+  }
+  const deleteQuiz = () => {
+    const token = localStorage.getItem('token')
+    props.deleteQuiz(token, props.newQuiz)
+    props.history.push('/profile')
+  }
 
 
   return(
     <div id="quiz-form-wrapper">
       {props.newQuiz !== "" ? 
         <>
-        <div id="quiz-content-wrapper" >
-        {props.newQuiz.img_url === null ? null : 
-          <img alt="" src={props.newQuiz.img_url} />
-        }
-        <div id="quiz-content">
-          <h5>Title</h5>
-          <h3>{props.newQuiz.title}</h3>
-          <h5>Category</h5>
-          <h3>{props.newQuiz.category}</h3>
+        {editQuizContent ? 
+          renderQuizForm() :
+        <div id="quiz-form-content-wrapper" >
+          {props.newQuiz.img_url === null ? null : 
+            <img alt="" src={props.newQuiz.img_url} />
+          }
+          <div id="quiz-content">
+            <h5>Title</h5>
+            <h3>{props.newQuiz.title}</h3>
+            <h5>Category</h5>
+            <h3>{props.newQuiz.category}</h3>
+            <div>
+              <button onClick={()=>editQuiz()}>Edit</button>
+              <button onClick={()=>deleteQuiz()} >Delete</button>
+            </div>
+          </div>
         </div>
-      </div>
+        }
       <div id="questions" >
         {props.newQuestionArray.length > 0 ? renderQuestions() : null }
       </div>
@@ -176,37 +244,15 @@ function QuizForm(props){
           <option value="four">Choice Four</option>
         </select>
         <input type="submit" value="Submit Question" />
+      <button onClick={finishQuiz}>Finish & Create Quiz</button>
       </form>
-      <button onClick={finishQuiz}>Finish & Create New Quiz</button>
       </>
       : 
-      <>
+      <div id="new-quiz-form-wrapper">
         <h3>Create New Quiz</h3>
         <p>Start by inputing the Title and Category of your new quiz.</p>
-        <div id="quiz-form" onSubmit={quizSubmitHandler} >
-          <input 
-            type="text"
-            name="title"
-            placeholder="Title..."
-            value={quizTitle}
-            onChange={(e)=> setQuizTitle(e.target.value)}
-          />
-          <input 
-            type="text"
-            name="category"
-            placeholder="Category..."
-            value={quizCategory}
-            onChange={(e)=> setQuizCategory(e.target.value)}
-          />
-          <input
-            type="file"
-            name="quizImg" 
-            accept="image/*" 
-            onChange={(e)=>setQuizImg(e.target.files[0])}
-          />
-          <input type="submit" value="Create Quiz"/>
-        </div>
-      </> }
+        {renderQuizForm()}
+      </div> }
     </div>
   )
 }
@@ -221,6 +267,8 @@ const msp = (state) => {
 const mdp = (dispatch) => {
   return {
     createQuiz: (token, newQuiz) => dispatch(createQuiz(token, newQuiz)),
+    editQuiz: (token, quiz, quizId) => dispatch(editQuiz(token, quiz, quizId)),
+    deleteQuiz: (token, quiz) => dispatch(deleteQuiz(token, quiz)),
     addQuestion: (token, newQuestion) => dispatch(addQuestion(token, newQuestion)),
     editQuestion: (token, question) => dispatch(editQuestion(token, question)), 
     deleteQuestion: (token, question) => dispatch(deleteQuestion(token, question))

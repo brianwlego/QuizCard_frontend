@@ -6,10 +6,12 @@ export default (state = {
   homeQuizzes: [],
   userCreations: [],
   userFavs: [],
+  userScores: [],
   newDeck: "",
   newCardArray: [],
   newQuiz: "",
   newQuestionArray: [],
+  quizScore: "",
 
 }, action) => {
   switch(action.type){
@@ -39,12 +41,21 @@ export default (state = {
       return{
         ...state,
         userCreations: action.payload.userCreations, 
-        userFavs: action.payload.userFavs
+        userFavs: action.payload.userFavs,
+        userScores: action.payload.userScores
       } 
     case 'NEW_DECK':
       return{
         ...state,
         newDeck: action.payload
+      }
+    case 'EDIT_DECK':
+      const editDeckArray = [...state.userCreations].filter(deck=>deck.id !== action.payload.id)
+      editDeckArray.unshift(action.payload)
+      return{
+        ...state, 
+        newDeck: action.payload,
+        userCreations: editDeckArray
       }
     case 'ADD_CARD':
       return{
@@ -64,10 +75,33 @@ export default (state = {
         ...state,
         newCardArray: deleteCardArray
       }
+    case 'FINISH_DECK':
+      const finishDeckFavArray = [...state.userFavs]
+      const foundIdxDeck = state.userFavs.findIndex(deck=> deck.id === action.payload.id)
+      if (foundIdxDeck !== -1){
+        finishDeckFavArray.splice(foundIdxDeck, 1, action.payload)
+      }
+      return{
+        ...state,
+        homeDecks: [...state.homeDecks, action.payload],
+        userCreations: [action.payload, ...state.userCreations],
+        userFavs: finishDeckFavArray
+      }
     case 'NEW_QUIZ':
       return{
         ...state,
-        newQuiz: action.payload
+        newQuiz: action.payload, 
+        userCreations: [...state.userCreations, action.payload],
+        homeQuizzes: [...state.homeQuizzes, action.payload]
+      }
+    case 'EDIT_QUIZ':
+      const editQuizArray = [...state.userCreations].filter(quiz=>quiz.id !== action.payload.id)
+      editQuizArray.unshift(action.payload)
+      return{
+        ...state,
+        newQuiz: action.payload,
+        userCreations: editQuizArray,
+
       }
     case 'NEW_QUESTION':
       return{
@@ -92,16 +126,32 @@ export default (state = {
       const newUserCreationsArray = [...state.userCreations]
       newUserCreationsArray.splice(idx, 1)
       const newHomeQuizzes = [...state.homeQuizzes].filter(quiz=> quiz.id !== action.payload.id)
+      const dltidx = state.userFavs.indexOf(action.payload)
+      const newUserFavs = [...state.userFavs]
+      if (dltidx){
+        newUserFavs.filter(quiz=> quiz.id !== action.payload.id)
+      }
       return{
         ...state,
         userCreations: newUserCreationsArray,
-        homeQuizzes: newHomeQuizzes
+        homeQuizzes: newHomeQuizzes,
+        userFavs: newUserFavs
       }
     case 'POPULATE_QUIZ_FORM':
       return{
         ...state,
         newQuiz: action.payload,
         newQuestionArray: action.payload.questions
+      }
+    case 'POPULATE_QUIZ_SCORE':
+      return{
+        ...state,
+        quizScore: action.payload
+      }  
+    case 'RESET_QUIZ_SCORE':
+      return{
+        ...state, 
+        quizScore: ""
       }
     case 'DELETE_DECK':
       const deckIdx = state.userCreations.indexOf(action.payload)
@@ -131,7 +181,12 @@ export default (state = {
       return{
         ...state,
         userFavs: newUsersFavArray
-      }  
+      }
+    case 'ADD_SCORE':
+      return{
+        ...state,
+        userScores: [...state.userScores, action.payload]
+      }    
     
     default:
       return state

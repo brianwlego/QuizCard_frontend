@@ -4,6 +4,36 @@ body{
   background-size: cover;
   background-repeat: no-repeat;
 }
+#root{
+  height: 100vh;
+}
+
+button {
+  box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+	background-color:#ffffff;
+	border-radius:6px;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	cursor:pointer;
+  color:#666666;
+  font-family: Arial, Helvetica, sans-serif;
+	/* font-size:15px;
+	font-weight:bold; */
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #ffffff;
+}
+button:hover {
+	background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+	background-color:#f6f6f6;
+}
+button:active {
+	position:relative;
+	top:1px;
+}
+
+
 
 
 #app-wrapper {
@@ -32,7 +62,7 @@ div#sign-up{
   width: 60%;
   height: 65%;
   padding: 12px;
-  border-radius: 5%;
+  border-radius: 20px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   background: rgba(255, 255, 255, 1.0);
   z-index: 2;
@@ -73,26 +103,34 @@ div#login{
 
 /************ NAVBAR ***************/
 #search-list{
-  width: 100%;
+  width: 50%;
+  max-height: 40vh;
+  margin-top: 2.5em;
+  /* border-right: 2px solid gray;
+  border-left: 2px solid gray;
+  border-bottom: 2px solid gray; */
+  border-radius: 10px;
+  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: scroll;
 }
 .search-item {
-  width: 100%;
+  width: 95%;
   height: 30px;
 	box-shadow:inset 0px 1px 0px 0px #ffffff;
-	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
-	background-color:#ffffff;
+	background:linear-gradient(to bottom, #fffffff5 5%, #f6f6f6f5 100%);
+	background-color:#fffffff5;
 	border-radius:6px;
 	border:1px solid #dcdcdc;
 	display:inline-block;
 	cursor:pointer;
 	color:#666666;
-	font-family:Arial;
-	font-size:15px;
-	font-weight:bold;
-	padding:6px 24px;
+	font-family: Raleway;
+  font-size: 13px;
+  font-weight: 200;
+	padding: 3px 0;
 	text-decoration:none;
 	text-shadow:0px 1px 0px #ffffff;
 }
@@ -106,35 +144,57 @@ div#login{
 }
 #search-form input{
   margin: 0 5px;
-  padding: 1em;
-  width: 20em;
+  padding: 0.5em;
+  width: 35em;
 }
 
 #navbar-wrapper{
   width: 100%;
   position: fixed;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   height: 3em;
 
 }
-#navbar-wrapper ul{
+#navbar-center{
+  align-items: center;
+}
+#search-wrapper{
+  height: 100%;
+  align-items: center;
   display: flex;
-  list-style-type: none;
-  margin: 0;
+  flex-direction: column;
+}
+#search-wrapper form{
+  margin-top: 8px;
+}
+#search-wrapper a{
   padding: 0;
 }
-#navbar-wrapper li {
-  display: inline;
-  text-decoration: none;
-  height: 100%;
+#search-wrapper p{
+  margin: 0;
+}
+
+#navbar-right{
+  align-items: center;
+  display: flex;
+  margin-right: 10px;
+}
+#navbar-left{
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+#navbar-wrapper p{
+  font-weight: bold;
+  color: black;
+  padding: 8px;
+  cursor: pointer;
 }
 #navbar-wrapper a {
+  color: black;
   text-decoration: none;
   display: block;
-  padding: 8px;
-  background-color: #dddddd;
 }
 
 
@@ -145,54 +205,71 @@ div#login{
   align-items: center;
   justify-content: space-around;
 }
-.profile-list-wrapper{
+#left-side-profile-wrapper{
   max-height: 90vh;
-  width: 60%;
-  overflow: scroll;
+  width: 35%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
 }
-#profile-card-wrapper{
+/************** PROFILE CARD  ****************/
+#profile-card-outer-wrapper{
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: space-evenly;
-}
-#profile-card-wrapper{
-  display: flex;
-  align-items: center;
-  border: 1px solid black;
-  border-radius: 2%;
+  border-radius: 12px;
+  margin-top: 2em;
   padding: 10px;
+  background: rgba(255, 255, 255, 0.769);
+}
+#profile-card-wrapper{
+  text-align: center;
+  font-family: 'Raleway';
 }
 #profile-card-wrapper img{
   max-height: 150px;
+  margin-top: 5px;
   width: auto;
   min-width: 100px;
 }
+.profile-list-wrapper{
+  max-height: 90vh;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#score-list-profile-wrapper{
+  text-align: center;
+  width: 75%;
+}
+#profile-score-list{
+  height: 28vh;
+    width: 100%;
+    overflow: scroll;
+}
 .profile-card-button {
-  width: 90%;
+  width: 80%;
   margin-top: 5px;
-  border: 0;
-	box-shadow: 0px 10px 14px -7px #dcecfb;
-	background:linear-gradient(to bottom, #bddbfa 5%, #80b5ea 100%);
-	background-color:#bddbfa;
-	border-radius:8px;
+  box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+	background-color:#ffffff;
+	border-radius:6px;
+	border:1px solid #dcdcdc;
 	display:inline-block;
 	cursor:pointer;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:20px;
+	color:#666666;
+	/* font-family:Arial; */
+	font-size:15px;
 	font-weight:bold;
-	padding:13px 32px;
+	padding:6px 24px;
 	text-decoration:none;
-	text-shadow:0px 1px 0px #528ecc;
+	text-shadow:0px 1px 0px #ffffff;
 }
 .profile-card-button:hover {
-	background:linear-gradient(to bottom, #80b5ea 5%, #bddbfa 100%);
-	background-color:#80b5ea;
+	background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+	background-color:#f6f6f6;
 }
 .profile-card-button:active {
 	position:relative;
@@ -204,6 +281,7 @@ div#login{
   display: inline;
   overflow: scroll;
   padding: 8px;
+  text-align: center;
 }
 #user-created:hover{
   cursor: pointer;
@@ -217,6 +295,7 @@ div#login{
   display: inline;
   overflow: scroll;
   padding: 8px;
+  text-align: center;
 }
 
 /**************** HOME **************/
@@ -261,65 +340,101 @@ div.card-wrapper{
   align-items: center;
   border: 2px solid black;
   margin: 10px 0;
-  background: white;
+  padding: 5px 0;
+  background: rgba(255, 255, 255, 0.769);
 }
 .card-wrapper:hover{
   cursor: pointer;
 }
-.card-wrapper h3{
+.card-h3{
+  margin: 0;
+  width: 90%;
+  text-align: center;
+  border-bottom: 1px solid lightgray;
+  font-weight: bold;
+}
+.card-title{
   margin: 0;
   text-align: center;
+  font-weight: 200;
 }
 .card-wrapper a{
   text-decoration: none;
 }
-.card-wrapper p{
-  text-align: center;
-  margin: 0 0 3px 0;
+.card-content-wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 3px 0;
+}
+.card-button-wrapper{
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+}
+.card-button-wrapper button{
+  padding: 3px 24px;
+  font-weight: 200;
   font-size: smaller;
 }
-.inner-wrapper {
+.left-content{
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: right;
+  text-align: right;
+  margin-right: 2px;
 }
-.inner-wrapper p{
+.left-content p{
+  font-weight: bold;
   margin: 0;
-  text-align: center;
-  font-size: small;
+  font-size: smaller;
 }
-div.middle-wrapper {
+.right-content{
   display: flex;
-  align-items: center;
-  justify-content: space-evenly;
+  flex-direction: column;
+  justify-content: left;
+  text-align: left;
+  margin-left: 2px;
+}
+.right-content p{
+  font-weight: 200;
+  margin: 0;
+  font-size: smaller;
 }
 
 
 
-/********** DECK FROM CSS *************/
+/********** DECK FORM CSS *************/
 div#deck-form-wrapper{
   margin-top: 3em;
   display: flex;
-  flex-direction: column;
+  justify-content: space-around;
   align-items: center;
 }
 div#cards{
   display: flex;
   align-items: center;
-  width: 90%;
-  margin: 1em 0;
-  max-height: 200px;
+  flex-direction: column;
+  width: 35%;
+  max-height: 90vh;
   overflow: scroll;
-  background-color: rgb(219, 225, 225);
-  border: 1px solid lightgray;
 }
 #deck-content{
   width: 250px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid lightgray;
-  border-radius: 4%;
+  background: rgba(255, 255, 255, 0.769);
+  border-radius: 20px;
+}
+#new-deck-wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#new-deck-wrapper img{
+  max-height:150px;
+  width: auto;
 }
 #deck-content h3{
   margin: 5px 0;
@@ -331,23 +446,46 @@ div#cards{
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid black;
-  border-radius: 3%;
-  max-width: 8em;
-  max-height: 10em;
+
+  border-radius: 20px;
+  width: 90%;
+  height: auto;
+  padding: 3px;
   margin: 5px;
-  background-color: white;
+  background: rgba(255, 255, 255, 0.769)
+}
+.card-p-wrapper{
+  width: 90%;
+}
+.card-p-top{
+  font-weight: bold;
+  border-bottom: 1px solid lightgray;
+  width: 100%;
+}
+.card-p-bottom{
+  font-size: smaller;
+}
+.card-nav span{
+  position: absolute;
+  margin-left: 27%;
+}
+.card-nav p{
+  margin: 0;
 }
 #card-form{
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  margin-right: 1em;
 }
 #card-form input{
-  padding: 5px;
+  padding: 25px;
   margin: 5px 0;
   width: 20em;
+}
+#card-form input#submit{
+  padding: 8px
 }
 #deck-form{
   display: flex;
@@ -365,20 +503,25 @@ div#cards{
 #quiz-form-wrapper{
   margin-top: 3em;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: space-around;
 }
-div#questions{
+#questions{
   display: flex;
   align-items: center;
+  flex-direction: column;
+  max-height: 90vh;
+  max-width: 40%;
+  overflow: scroll;
 }
 #quiz-content{
   width: 250px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid lightgray;
-  border-radius: 4%;
+
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.769);
 }
 #quiz-content h3{
   margin: 5px 0;
@@ -389,27 +532,45 @@ div#questions{
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid black;
-  border-radius: 3%;
-  max-width: 8em;
+
+  border-radius: 20px;
+  width: 90%;
   height: auto;
   margin: 5px;
+  background: rgba(255, 255, 255, 0.769);
 }
 #question-form{
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  margin-right: 1em;
 }
 #question-form input{
   padding: 5px;
   margin: 5px 0;
-  width: 20em;
+  width: 100%;
 }
 #quiz-form{
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+#quiz-form-content-wrapper img{
+  max-height: 150px;
+  width: auto;
+}
+#new-quiz-form-wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#form-file-button{
+  cursor: pointer;
+}
+#photo-preview{
+  max-height: 100px;
+  width: auto;
 }
 #quiz-form input{
   padding: 5px;
@@ -418,52 +579,55 @@ div#questions{
 }
 
 /************* DECK SHOW ************/
-#deck-show-content{
-  width: 40%;
-  height: 80%;
-  background-color: lightblue;
-  padding: 100px;
+.deck-wrapper {
+  margin-top: 6em;
+  display: flex;
+  justify-content: space-between;
+}
+#deck-show-wrapper{
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+#deck-show-content{
+  width: 50vw;
+  height: 55vh;
+  background: aliceblue;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   border: 1px solid black;
-  border-radius: 2%;
+  border-radius: 20px;
+  margin-right: 4em;
+}
+#deck-content-wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 5em;
+}
+#deck-content-wrapper img{
+  max-height: 100px;
+  width: auto;
+  object-fit: contain;
+  margin: 10px;
+  box-shadow: 5px 15px 30px #888888;
+  border: 1px solid lightgray;
 }
 #deck-show-content p{
   text-align: center;
   max-width: 80%;
 }
-.deck-wrapper {
-  margin-top: 3em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/*********** QUIZ SHOW **************/
-.quiz-wrapper {
-  margin-top: 3em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-#quiz-show-content{
-  background: aliceblue;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid black;
-  border-radius: 3%;
-  padding: 2em;
-}
-#quiz-buttons-wrapper{
+.deck-buttons-wrapper{
   margin: 20px;
-  width: 30%;
+  margin-right: 6.5em;
+  min-width: 60%;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-#quiz-buttons-wrapper button {
+.deck-buttons-wrapper button {
 	box-shadow:inset 0px 1px 0px 0px #ffffff;
 	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
 	background-color:#ffffff;
@@ -479,17 +643,235 @@ div#questions{
 	text-decoration:none;
 	text-shadow:0px 1px 0px #ffffff;
 }
-#quiz-buttons-wrapper button:hover {
+.deck-buttons-wrapper button:hover {
 	background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
 	background-color:#f6f6f6;
 }
-#quiz-buttons-wrapper button:active {
+.deck-buttons-wrapper button:active {
 	position:relative;
 	top:1px;
+}
+#disabled {
+  background: gray;
+  color: lightgray;
+  border: 1px solid gray;
+  border-radius: 6px;
+  box-shadow: 0 0 black;
+  text-shadow: 0 0 black;
+}
+
+/*********** QUIZ SHOW **************/
+.quiz-wrapper {
+  margin-top: 6em;
+  display: flex;
+  justify-content: space-between;
+}
+#quiz-show-wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#quiz-show-content{
+  background: aliceblue;
+  width: 50vw;
+  height: 55vh;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 3%;
+  padding: 2em;
+  margin-right: 4em;
+}
+#close-button{
+
+  align-self: flex-end;
+  font-size: medium;
+  border: none;
+  background: transparent;
+  margin: 0 0 0 10px;
+  box-shadow: none;
+}
+#close-button:hover{
+  cursor: pointer;
+}
+#quiz-content-wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 5em;
+  /* justify-content: space-evenly; */
+}
+#quiz-content-wrapper img{
+  max-height: 100px;
+    width: auto;
+    object-fit: contain;
+    margin: 10px;
+    box-shadow: 5px 15px 30px #888888;
+    border: 1px solid lightgray;
+}
+#cat-title-wrapper{
+  margin: 1em 0;
+  width: 20vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.769);
+  border-radius: 12px;
+  padding: 10px;
+}
+#cat-title-wrapper h4{
+  text-align: center;
+  font-weight: 200;
+  margin-bottom: 1em;
+  margin-top: .5em;
+}
+#cat-title-wrapper h3{
+  border-bottom: 1px solid lightgray;
+  width: 100%;
+  padding-bottom: 5px;
+  margin: 0;
+  text-align: center;
+}
+#score-button-wrapper{
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+#score-list-wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#score-content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#quiz-scores{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+#no-scores{
+  width: 70%;
+}
+#score-list{
+  height: 38vh;
+  width: 100%;
+  overflow: scroll;
+}
+.profile-score-card{
+  margin-bottom: 5px;
+  background: rgba(255, 250, 250, 0.769);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+}
+.profile-score-card:hover{
+  cursor: pointer;
+}
+.left-score-content{
+  display: flex;
+  flex-direction: column;
+  justify-content: right;
+  text-align: right;
+  margin-right: 2px;
+}
+.left-score-content p{
+  margin: 0;
+  font-weight: bold;
+  font-size: smaller;
+}
+.right-score-content{
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  text-align: left;
+  margin-left: 2px;
+}
+.right-score-content p{
+  margin: 0;
+  font-weight: 200;
+  font-size: smaller;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#score-content button {
+	box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+	background-color:#ffffff;
+	border-radius:6px;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	cursor:pointer;
+	color:#666666;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #ffffff;
+}
+#score-content button:hover {
+	background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+	background-color:#f6f6f6;
+}
+#score-content button:active {
+	position:relative;
+	top:1px;
+}
+.quiz-buttons-wrapper{
+  margin: 20px;
+  margin-right: 6.5em;
+  min-width: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.quiz-buttons-wrapper button {
+	box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+	background-color:#ffffff;
+	border-radius:6px;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	cursor:pointer;
+	color:#666666;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #ffffff;
+}
+.quiz-buttons-wrapper button:hover {
+	background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+	background-color:#f6f6f6;
+}
+.quiz-buttons-wrapper button:active {
+	position:relative;
+	top:1px;
+}
+#disabled {
+  background: gray;
+  color: lightgray;
+  border: 1px solid gray;
+  border-radius: 6px;
+  box-shadow: 0 0 black;
+  text-shadow: 0 0 black;
 }
 
 /************** CHOICE ***************/
 .right-answer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 18em;
   margin: 10px 0;
 	box-shadow:inset 0px 1px 0px 0px #3dc21b;
@@ -497,7 +879,6 @@ div#questions{
 	background-color:#44c767;
 	border-radius:6px;
 	border:1px solid #18ab29;
-	display:inline-block;
 	cursor:pointer;
 	color:#ffffff;
 	font-family:Arial;
@@ -516,6 +897,9 @@ div#questions{
 	top:1px;
 }
 .wrong-answer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 18em;
   margin: 10px 0;
 	box-shadow:inset 0px 1px 0px 0px #f7c5c0;
@@ -523,7 +907,6 @@ div#questions{
 	background-color:#fc8d83;
 	border-radius:6px;
 	border:1px solid #d83526;
-	display:inline-block;
 	cursor:pointer;
 	color:#ffffff;
 	font-family:Arial;
@@ -578,18 +961,4 @@ div#questions{
 .wrong-answer p{
   margin: 3px 0;
   padding-left: 1em;
-}
-
-/************** PROFILE CARD  ****************/
-#profile-card-wrapper{
-  display: flex;
-  align-items: center;
-  border: 1px solid black;
-  border-radius: 2%;
-  padding: 10px;
-}
-#profile-card-wrapper img{
-  max-height: 150px;
-  width: auto;
-  min-width: 100px;
 }

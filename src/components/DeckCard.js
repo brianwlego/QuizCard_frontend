@@ -28,20 +28,22 @@ function DeckCard (props) {
   
   return (
     <div className="card-wrapper" onClick={clickHandler}>
-      <h3>{props.deck.title}</h3>
-      <div className="middle-wrapper">
-        <div className="inner-wrapper">
-          <p>Number of Cards</p>
-          <p>{props.deck.cards.length}</p>
+      <h3 className="card-h3">Deck</h3>
+      <h3 className="card-title">{props.deck.title}</h3>
+      <div className="card-content-wrapper">
+        <div className="left-content">
+          <p>cards</p>
+          <p>category</p>
+          <p>made by</p>
         </div>
-        <div className="inner-wrapper">
-          <p>Category</p>
+        <div className="right-content">
+          <p>{props.deck.cards.length}</p>
           <p>{props.deck.category}</p>
+          <p>{props.deck.made_by}</p>
         </div>
       </div>
-      <p>Made By: {props.deck.made_by}</p>
       {!props.profile ? null : 
-        <div>
+        <div className="card-button-wrapper">
           <button className="edit">Edit</button>
           <button className="delete" >Delete</button>
         </div>

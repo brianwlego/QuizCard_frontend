@@ -81,17 +81,32 @@ function DeckShow (props){
     <>
     {deck.cards !== undefined ? 
       <div className="deck-wrapper">
-        <h3>Category: {deck.category}</h3>
-        <h4>Title: {deck.title}</h4>
-        <div id="deck-show-content" onClick={() => setFront(!front)} >
-          <p>{!front ? deck.cards[cardNum].front : deck.cards[cardNum].back}</p>
+        <div id="deck-content-wrapper">
+          {deck.img_url !== null ? <img alt="" src={deck.img_url}/> : null}
+        <div id="cat-title-wrapper">
+          <h3>Category</h3>
+          <h4>{deck.category}</h4>
+          <h3>Title</h3>
+          <h4>{deck.title}</h4>
         </div>
-        <p>{cardNum + 1} of {deck.cards.length}</p>
-        <div id="buttons-wrapper" >
-          <button onClick={previous}>previous</button>
-          <button onClick={next}>next</button>
+          <button onClick={favHandler}>{!favDeck ? "Add This Deck To Your Favorites" : "Remove This Deck From Favorites"}</button>
         </div>
-        <button onClick={favHandler}>{!favDeck ? "Add This Deck To Your Favorites" : "Remove This Deck From Favorites"}</button>
+        <div id="deck-show-wrapper">
+          <div id="deck-show-content" onClick={() => setFront(!front)} >
+            <p>{!front ? deck.cards[cardNum].front : deck.cards[cardNum].back}</p>
+          </div>
+          <div className="deck-buttons-wrapper" >
+            <button 
+              onClick={previous}
+              id={cardNum !== 0 ? null : 'disabled'}
+              >previous</button>
+            <p>{cardNum + 1} of {deck.cards.length}</p>
+            <button 
+              onClick={next}
+              id={cardNum === deck.cards.length - 1 ? 'disabled' : null}
+            >next</button>
+          </div>
+        </div>
       </div>
       :
       <div className="deck-wrapper">

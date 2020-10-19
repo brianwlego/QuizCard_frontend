@@ -2,15 +2,22 @@ import React from 'react'
 
 function Choice(props){
 
-
+  const choice = props.choice
+  const click = (e) => {
+    if (props.handleClick !== ""){
+      props.handleClick(choice)
+    }
+  }
 
   return(
     <>
     <div 
-    className={props.styling}
-    onClick={()=>props.handleClick()} 
+      className={props.styling}
+      id={props.chosen}
+      onClick={click} 
     >
-      <p>{props.choice.content}</p>
+      {props.chosen === "" ? null : props.choice.answer ? <span>&#10004;</span> : <span>&#10006;</span>}
+      <p>{choice.content}</p>
     </div> 
     </>
   )

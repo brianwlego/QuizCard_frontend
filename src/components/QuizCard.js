@@ -15,7 +15,6 @@ function QuizCard (props) {
     props.deleteQuiz(token, props.quiz)
   }
   const clickHandler = (e) => {
-    console.log(e.target)
     if (e.target.className === "edit"){
       editHandler()
     } else if (e.target.className === "delete"){
@@ -29,20 +28,22 @@ function QuizCard (props) {
 
   return (
     <div className="card-wrapper" onClick={clickHandler}>
-      <h3>Quiz: {props.quiz.title}</h3>
-      <div className="middle-wrapper">
-        <div className="inner-wrapper" >
-          <p>Questions</p>
+      <h3 className="card-h3">Quiz</h3>
+      <h3 className="card-title">{props.quiz.title}</h3>
+      <div className="card-content-wrapper">
+        <div className="left-content">
+          <p>questions</p>
+          <p>category</p>
+          <p>made by</p>
+        </div>
+        <div className="right-content">
           <p>{props.quiz.questions.length}</p>
-        </div >
-        <div className="inner-wrapper">
-          <p>Category</p>
           <p>{props.quiz.category}</p>
-        </div >
+          <p>{props.quiz.made_by}</p>
+        </div>
       </div>
-      <p>Made By: {props.quiz.made_by}</p>
       {!props.profile ? null : 
-        <div id="card-button-wrapper">
+        <div className="card-button-wrapper">
           <button className="edit">Edit</button>
           <button className="delete">Delete</button>
         </div>

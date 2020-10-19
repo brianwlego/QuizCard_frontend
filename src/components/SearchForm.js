@@ -20,18 +20,18 @@ function SearchForm(props){
   const mapQuizzesDecks = () => {
     return suggestions.map(quizdeck => {
       return (
-        <a href={quizdeck.questions ? `/home/quiz/${quizdeck.id}` : `/home/deck/${quizdeck.id}`} className="search-item">
-          <li>
-            {quizdeck.title} {quizdeck.category}
-          </li>
-        </a>
+        <div className="search-item">
+          <a href={quizdeck.questions ? `/home/quiz/${quizdeck.id}` : `/home/deck/${quizdeck.id}`} className="search-link">
+            <p>{quizdeck.title} {quizdeck.category}</p>
+          </a>
+        </div>
       )
     })
   }
 
 
   return(
-    <div id="searh-wrapper">
+    <div id="search-wrapper">
       <form id="search-form">
         <input
           type="text"
@@ -40,9 +40,9 @@ function SearchForm(props){
           onChange={changeHandler}
         />
       </form>
-      <ul id="search-list" >
+      <div id="search-list" >
         {searchValue.length > 0 ? mapQuizzesDecks() : null}
-      </ul>
+      </div>
     </div>
   )
 }

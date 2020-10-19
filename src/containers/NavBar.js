@@ -16,12 +16,16 @@ function NavBar(props){
 
   return (
     <div id="navbar-wrapper">
-      <ul>
-        <li onClick={home}><a href=''>Home</a></li>
-        <li onClick={profile}><a href=''>Profile</a></li>
+      <div id="navbar-left">
+        <p onClick={home}>QuizCard</p>
+        <p onClick={profile}>Profile</p>
+      </div>
+      <div id="navbar-center">
         <SearchForm />
-        <li onClick={logout}><a href='/login'>Log Out</a></li>
-      </ul>
+      </div>
+      <div id="navbar-right">
+        <p onClick={logout}><a href='/login'>Log Out</a></p>
+      </div>
     </div>
   )
 }

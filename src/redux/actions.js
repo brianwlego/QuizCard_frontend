@@ -81,10 +81,11 @@ export const populateProfile = (token) => {
     })
     .then(resp=>resp.json())
     .then(data => {
-      dispatch(({type: 'POPULATE_PROFILE', payload: {userCreations: data.decks_quizzes, userFavs: data.user_favs}}))
+      dispatch(({type: 'POPULATE_PROFILE', payload: {userCreations: data.decks_quizzes, userFavs: data.user_favs, userScores: data.scores}}))
     })
   }
 }
+
 
 export const createDeck = (token, newDeck) => {
   return function(dispatch){
@@ -99,6 +100,25 @@ export const createDeck = (token, newDeck) => {
         dispatch({type: 'NEW_DECK', payload: data.deck})
       })
   }
+}
+
+export const editDeck = (token, editDeck, deckId) => {
+  return function(dispatch){
+    const configObj = {
+      method: 'PATCH',
+      headers: { "Authorization": `Bearer ${token}`},
+      body: editDeck 
+    }
+    fetch(`http://localhost:3000/api/v1/decks/${deckId}`, configObj)
+      .then(resp => resp.json())
+      .then(data => {
+        dispatch({type: 'EDIT_DECK', payload: data.deck})
+      })
+  }
+}
+
+export const finishCreateUpdateDeck = (deck) => {
+  return {type: 'FINISH_DECK', payload: deck}
 }
 
 export const addCard = (token, card) => {
@@ -170,6 +190,21 @@ export const createQuiz = (token, newQuiz) => {
       .then(resp => resp.json())
       .then(data => {
         dispatch({type: 'NEW_QUIZ', payload: data.quiz})
+      })
+  }
+}
+
+export const editQuiz = (token, editQuiz, quizId) => {
+  return function(dispatch){
+    const configObj = {
+      method: 'PATCH',
+      headers: { "Authorization": `Bearer ${token}`},
+      body: editQuiz 
+    }
+    fetch(`http://localhost:3000/api/v1/quizzes/${quizId}`, configObj)
+      .then(resp => resp.json())
+      .then(data => {
+        dispatch({type: 'EDIT_QUIZ', payload: data.quiz})
       })
   }
 }
@@ -278,10 +313,22 @@ export const populateDeckForm = (deck) => {
   }
 }
 
+export const populateQuizScore = (score) => {
+  return { type: 'POPULATE_QUIZ_SCORE', payload: score}
+}
+
+export const resetQuizScore = () => {
+  return { type: 'RESET_QUIZ_SCORE'}
+}
+
 export const addFav = (newFav) => {
   return { type: 'FAVORITE', payload: newFav }
 }
 
 export const removeFav = (fav) => {
   return { type: 'UNFAVORITE', payload: fav }
+}
+
+export const addScore = (score) => {
+  return { type: 'ADD_SCORE', payload: score}
 }
