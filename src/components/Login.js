@@ -1,11 +1,17 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { connect } from 'react-redux';
-import { loginUser, setSignUp } from '../redux/actions'
+import { loginUser, setSignUp, populateBrowse, populateHome } from '../redux/actions'
 import SignUpWithRouter from './SignUp'
 
 function Login (props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+
+  useEffect(()=>{
+    props.populateBrowse()
+    props.populateHome()
+  }, [])
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -21,6 +27,7 @@ function Login (props) {
 
   return(
     <div id="login">
+      <h1>Welcome to QuizCard</h1>
       {props.error !== "" ? <p>{props.error}</p> : null}
       <h2>Log In</h2>
       <form onSubmit={submitHandler}>
@@ -32,7 +39,7 @@ function Login (props) {
           onChange={(e) => setEmail(e.target.value)}
         />
         <input 
-          type="text"
+          type="password"
           name="password"
           placeholder="Password..."
           value={password}
@@ -40,6 +47,7 @@ function Login (props) {
         />
         <input 
           type="submit"
+          value="Log In"
         />
       </form>
         <button onClick={props.setSignUp} >Click To Sign Up</button>
@@ -58,7 +66,9 @@ const msp = (state) => {
 const mdp = (dispatch) => {
   return {
     loginUser: (user, history) => dispatch(loginUser(user, history)),
-    setSignUp: () => dispatch(setSignUp())
+    setSignUp: () => dispatch(setSignUp()),
+    populateBrowse: () => dispatch(populateBrowse()),
+    populateHome: () => dispatch(populateHome())
   }
 }
 

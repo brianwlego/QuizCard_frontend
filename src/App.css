@@ -8,6 +8,14 @@ body{
   height: 100vh;
 }
 
+:root {
+  --animate-duration: 300ms;
+
+}
+
+
+
+
 button {
   box-shadow:inset 0px 1px 0px 0px #ffffff;
 	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
@@ -51,7 +59,7 @@ div#sign-up-modal{
     align-items: center;
     height: 100%;
     width: 100%;
-    background: rgba(131, 130, 130, 0.618);
+    background: rgba(131, 130, 130, 0.118);
 }
 div#sign-up{
   display: flex;
@@ -59,12 +67,12 @@ div#sign-up{
   justify-content: center;
   align-items: center;
   position: relative;
-  width: 60%;
+  width: 45%;
   height: 65%;
   padding: 12px;
   border-radius: 20px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  background: rgba(255, 255, 255, 1.0);
+  background: rgba(245, 245, 245, 0.988);
   z-index: 2;
 }
 #sign-up h3{
@@ -167,6 +175,7 @@ div#login{
 }
 #search-wrapper form{
   margin-top: 8px;
+  margin-right: 8.5em;
 }
 #search-wrapper a{
   padding: 0;
@@ -245,9 +254,9 @@ div#login{
   width: 75%;
 }
 #profile-score-list{
-  height: 28vh;
-    width: 100%;
-    overflow: scroll;
+  height: 26vh;
+  width: 100%;
+  overflow: scroll;
 }
 .profile-card-button {
   width: 80%;
@@ -406,7 +415,7 @@ div.card-wrapper{
 
 /********** DECK FORM CSS *************/
 div#deck-form-wrapper{
-  margin-top: 3em;
+  margin-top: 4em;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -419,8 +428,14 @@ div#cards{
   max-height: 90vh;
   overflow: scroll;
 }
+#card-form-wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 #deck-content{
   width: 250px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -466,8 +481,8 @@ div#cards{
   font-size: smaller;
 }
 .card-nav span{
-  position: absolute;
-  margin-left: 27%;
+  position: relative;
+  margin-left: 88%;
 }
 .card-nav p{
   margin: 0;
@@ -501,7 +516,7 @@ div#cards{
 
 /********** QUIZ FORM CSS *************/
 #quiz-form-wrapper{
-  margin-top: 3em;
+  margin-top: 4em;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -519,7 +534,7 @@ div#cards{
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  padding: 10px;
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.769);
 }
@@ -532,7 +547,7 @@ div#cards{
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  padding: 3px;
   border-radius: 20px;
   width: 90%;
   height: auto;
@@ -544,6 +559,11 @@ div#cards{
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+}
+#question-form-wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-right: 1em;
 }
 #question-form input{
@@ -552,6 +572,11 @@ div#cards{
   width: 100%;
 }
 #quiz-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#quiz-form-content-wrapper{
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -961,4 +986,37 @@ div#cards{
 .wrong-answer p{
   margin: 3px 0;
   padding-left: 1em;
+}
+
+
+/************* BROWSE *****************/
+#browse-wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 30em;
+}
+#cat-list{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: scroll;
+}
+.cat-card{
+  cursor: pointer;
+  text-align: center;
+  border: 2px solid black;
+  margin: 0 0 6px 0;
+  padding: 5px 5px;
+  background: rgba(255, 255, 255, 0.769);
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.cat-card p{
+  margin: 0;
+}
+.cat-p{
+  font-weight: bold;
 }

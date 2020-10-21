@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import {connect} from 'react-redux'
-import {createQuiz, editQuiz, deleteQuiz, addQuestion, editQuestion, deleteQuestion} from '../redux/actions'
+import {createQuiz, editQuiz, deleteQuiz, addQuestion, editQuestion, deleteQuestion, finishCreateUpdateQuiz} from '../redux/actions'
 
 
 function QuizForm(props){
@@ -27,6 +27,8 @@ function QuizForm(props){
   const [editChoiceIdThree, setEditChoiceIdThree] = useState("")
   const [editChoiceIdFour, setEditChoiceIdFour] = useState("")
 
+  const [error, setError] = useState(false)
+
   const quizSubmitHandler = (e) => {
     e.preventDefault()
     const token = localStorage.getItem("token")
@@ -50,6 +52,9 @@ function QuizForm(props){
   const questionSubmitHandler = (e) => {
     const token = localStorage.getItem("token")
     e.preventDefault()
+    if (answer === ""){
+      setAnswer("one")
+    }
     const choices = [
       {content: choiceOne, answer: answer === "one" ? true : false},
       {content: choiceTwo, answer: answer === "two" ? true : false},
@@ -79,6 +84,7 @@ function QuizForm(props){
     setAnswer("")
     setEditQuestion(false)
     setEditQuestionId("")
+    setError(false)
   }
   const editHandler = (question) => {
     setEditQuestion(true)
@@ -106,7 +112,27 @@ function QuizForm(props){
     setChoiceFour("")
   }
   const finishQuiz = () => {
-    props.history.push('/profile')
+    if (props.newQuestionArray.length > 0){
+      setQuizTitle("")
+      setQuizCategory("")
+      setQuizImg("")
+      setPhotoURL("")
+      setEditQuizContent(false)
+      setQuestionContent("")
+      setChoiceOne("")
+      setChoiceTwo("")
+      setChoiceThree("")
+      setChoiceFour("")
+      setAnswer("")
+      setEditQuestion(false)
+      setEditQuestionId("")
+      const quiz = props.newQuiz
+      quiz.questions = props.newQuestionArray
+      props.finishCreateUpdateQuiz(quiz)
+      props.history.push('/profile')
+    } else {
+      setError(true)
+    }
   }
   const renderQuestions = () => {
     return props.newQuestionArray.sort((a, b) => a.num - b.num).map(question => {
@@ -158,7 +184,7 @@ function QuizForm(props){
             onChange={(e)=>handleFile(e)}
           />
           <label id="form-file-button" for="quizfile">{props.newQuiz === "" ? "Select Quiz Image" : "Change Image" }</label>
-          {photoURL !== "" ? <img id="photo-preview" src={photoURL} /> : props.newQuiz !== "" ? <img id="photo-preview" src={props.newQuiz.img_url} /> : null}
+          {photoURL !== "" ? <img id="photo-preview" src={photoURL} alt="" /> : props.newQuiz !== "" ? <img id="photo-preview" src={props.newQuiz.img_url} alt="" /> : null}
           <input type="submit" value={props.newQuiz === "" ? "Create Quiz" : "Update Quiz"}/>
         </form>
     )
@@ -200,6 +226,7 @@ function QuizForm(props){
       <div id="questions" >
         {props.newQuestionArray.length > 0 ? renderQuestions() : null }
       </div>
+      <div id="question-form-wrapper">
       <form onSubmit={questionSubmitHandler} id="question-form">
         <input 
           type="text"
@@ -244,8 +271,10 @@ function QuizForm(props){
           <option value="four">Choice Four</option>
         </select>
         <input type="submit" value="Submit Question" />
-      <button onClick={finishQuiz}>Finish & Create Quiz</button>
       </form>
+      <button onClick={finishQuiz}>Finish & Create Quiz</button>
+      {error ? <p>Error. Quiz must have at least one question</p> : null}
+      </div>
       </>
       : 
       <div id="new-quiz-form-wrapper">
@@ -271,7 +300,8 @@ const mdp = (dispatch) => {
     deleteQuiz: (token, quiz) => dispatch(deleteQuiz(token, quiz)),
     addQuestion: (token, newQuestion) => dispatch(addQuestion(token, newQuestion)),
     editQuestion: (token, question) => dispatch(editQuestion(token, question)), 
-    deleteQuestion: (token, question) => dispatch(deleteQuestion(token, question))
+    deleteQuestion: (token, question) => dispatch(deleteQuestion(token, question)), 
+    finishCreateUpdateQuiz: (quiz) => dispatch(finishCreateUpdateQuiz(quiz))
   }
 }
 

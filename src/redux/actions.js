@@ -34,7 +34,6 @@ export const signUp = (newUser) => {
       .then(resp => resp.json())
       .then(data => {
         localStorage.setItem("token", data.jwt)
-        console.log(data)
         dispatch({type: 'ADD_USER', payload: data.user})
     })
   }
@@ -57,27 +56,87 @@ export const checkToken = (token) => {
   }
 }
 
-export const populateHome = (token) => {
+export const populateBrowse = () => {
   return function(dispatch){
     fetch('http://localhost:3000/api/v1/home', {
       method: 'GET',
-      headers: { "Authorization": `Bearer ${token}`,
+      headers: {
         "Content-Type": "application/json",
         "Accepts": "application/json"
       },
     })
     .then(resp=>resp.json())
     .then(data => {
-      dispatch(({type: 'POPULATE_HOME', payload: {homeQuizzes: data.quizzes, homeDecks: data.decks}}))
+      dispatch({ type: 'POPULATE_BROWSE', payload: {decks: data.decks, quizzes: data.quizzes}})
     })
   }
 }
 
-export const populateProfile = (token) => {
+
+export const populateHome = () => {
+  return function(dispatch){
+    fetch(`http://localhost:3000/api/v1/quizzes?page=1`, {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Accepts": "application/json"
+      },
+    })
+    .then(resp=>resp.json())
+    .then(data => {
+      dispatch(({type: 'POPULATE_HOME_QUIZZES', payload: {homeQuizzes: data.quizzes, meta: data.meta}}))
+    })
+    fetch(`http://localhost:3000/api/v1/decks?page=1`, {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Accepts": "application/json"
+      },
+    })
+    .then(resp=>resp.json())
+    .then(data => {
+      dispatch(({type: 'POPULATE_HOME_DECKS', payload: {homeDecks: data.decks, meta: data.meta}}))
+    })
+  }
+}
+
+export const addQuizzes = (quizMetaData, quizLength) => {
+  return function(dispatch){
+    fetch(`http://localhost:3000/${quizMetaData.pagination.links.next}`, {
+      method: 'GET',
+      headers: { "Authorization": `Bearer ${localStorage.getItem('token')}`,
+        "Content-Type": "application/json",
+        "Accepts": "application/json"
+      },
+    })
+    .then(resp=>resp.json())
+    .then(data => {
+      dispatch(({type: 'ADD_HOME_QUIZZES', payload: {homeQuizzes: data.quizzes, meta: data.meta}}))
+    })
+  }
+}
+
+export const addDecks = (deckMetaData) => {
+  return function(dispatch){
+    fetch(`http://localhost:3000/${deckMetaData.pagination.links.next}`, {
+      method: 'GET',
+      headers: { "Authorization": `Bearer ${localStorage.getItem('token')}`,
+        "Content-Type": "application/json",
+        "Accepts": "application/json"
+      },
+    })
+    .then(resp=>resp.json())
+    .then(data => {
+      dispatch(({type: 'ADD_HOME_DECKS', payload: {homeDecks: data.quizzes, meta: data.meta}}))
+    })
+  }
+}
+
+export const populateProfile = () => {
   return function(dispatch){
     fetch('http://localhost:3000/api/v1/populate', {
       method: 'GET',
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     })
     .then(resp=>resp.json())
     .then(data => {
@@ -85,6 +144,7 @@ export const populateProfile = (token) => {
     })
   }
 }
+
 
 
 export const createDeck = (token, newDeck) => {
@@ -331,4 +391,8 @@ export const removeFav = (fav) => {
 
 export const addScore = (score) => {
   return { type: 'ADD_SCORE', payload: score}
+}
+
+export const finishCreateUpdateQuiz = (quiz) => {
+  return { type: 'FINISH_QUIZ', payload: quiz }
 }

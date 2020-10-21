@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import { connect } from 'react-redux'
 import {populateProfile, populateQuizScore} from '../redux/actions'
 import DeckCard from '../components/DeckCard'
@@ -8,22 +8,24 @@ import ProfileCard from '../components/ProfileCard'
 
 function Profile(props){
 
+
+
   useEffect(()=>{
-    const token = localStorage.getItem("token")
-    if (!props.popedProfile){
-      props.populateProfile(token)
+    if (!props.populatedProfile){
+      props.populateProfile()
     }
+
   }, [])
 
   const renderUserCreations = () => {
-    const creationsSorted = props.userCreations.sort((a,b)=> new Date(b.updated_at) - new Date(a.updated_at))
-    return creationsSorted.map(creation => 
-      creation.questions ? <QuizCard key={creation.id} quiz={creation} profile={true} /> 
-      : <DeckCard key={creation.id} deck={creation} profile={true} />
+    let creationsSorted = props.userCreations.sort((a,b)=> new Date(b.updated_at) - new Date(a.updated_at))
+    return creationsSorted.map((creation, index) => 
+      creation.questions ? <QuizCard key={index} quiz={creation} profile={true} /> 
+      : <DeckCard key={index} deck={creation} profile={true} />
     )
   }
   const renderUserFavs = () => {
-    const favsSorted = props.userFavs.sort((a,b)=> new Date(b.updated_at) - new Date(a.updated_at))
+    let favsSorted = props.userFavs.sort((a,b)=> new Date(b.updated_at) - new Date(a.updated_at))
     return favsSorted.map(creation => 
       creation.questions ? <QuizCard key={creation.id} quiz={creation} /> 
       : <DeckCard key={creation.id} deck={creation}/>
@@ -38,9 +40,9 @@ const renderPreviousQuiz = (score) => {
     const sortedScores = props.userScores.sort((a,b)=> new Date(b.created_at) - new Date(a.created_at))
     return(
         <div id="profile-score-list">
-          {sortedScores.map(score => {
+          {sortedScores.map((score, index) => {
             return(
-              <div className="profile-score-card" onClick={()=>renderPreviousQuiz(score)}>
+              <div className="profile-score-card" onClick={()=>renderPreviousQuiz(score)} key={index}>
                 <div className="left-score-content">
                   <p>quiz</p>
                   <p>user</p>
@@ -61,16 +63,20 @@ const renderPreviousQuiz = (score) => {
   }
   const handleClick = (e) => {
     e.persist()
+    const profile = document.getElementById('profile-wrapper')
     if (e.target.id === "new-deck"){
+      profile.className = "animate__animated animate__fadeOutDown"
       props.history.push('/profile/newdeck')
     } else if (e.target.id === "new-quiz"){
+      profile.className = "animate__animated animate__fadeOutDown"
       props.history.push('/profile/newquiz')
     }
   }
 
-  console.log(props.userScores)
+
 
   return(
+  
     <div id="profile-wrapper">
       <div id="left-side-profile-wrapper">
         <div id="profile-card-outer-wrapper">
@@ -115,12 +121,13 @@ const msp = (state) => {
     user: state.user,
     userCreations: state.userCreations,
     userFavs: state.userFavs,
-    userScores: state.userScores
+    userScores: state.userScores,
+    populatedProfile: state.populatedProfile
   }
 }
 const mdp = (dispatch) => {
   return {
-    populateProfile: (token) => dispatch(populateProfile(token)),
+    populateProfile: () => dispatch(populateProfile()),
     populateQuizScore: (score) => dispatch(populateQuizScore(score))
   }
 }

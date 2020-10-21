@@ -31,12 +31,22 @@ function DeckShow (props){
 
   const previous = () => {
     if (cardNum >= 1){
+      const show = document.getElementById('deck-show-content')
+      show.addEventListener('animationend', () => {
+        show.className = "animate__fadeInLeft animate__animated animate__faster"
+      });
+      show.className = "animate__animated animate__fadeOutRight animate__faster"
       setCardNum(cardNum - 1)
       setFront(false)
     }
   }
   const next = () => {
     if (cardNum <= deck.cards.length - 2){
+      const show = document.getElementById('deck-show-content')
+      show.addEventListener('animationend', () => {
+        show.className = "animate__animated animate__fadeInRight animate__faster"
+      });
+      show.className = "animate__animated animate__fadeOutLeft animate__faster"
       setCardNum(cardNum + 1)
       setFront(false)
     }
@@ -76,6 +86,19 @@ function DeckShow (props){
     }
   }
 
+  const clickHandler = (e) => {
+    const ele = e.target
+    ele.addEventListener('animationend', () => {
+        ele.className = ""
+      });
+    if (front){
+      ele.className = "animate__animated animate__flipInY animate__slow"
+    } else {
+      ele.className = "animate__animated animate__flipInY animate__slow"
+    } 
+    setFront(!front)
+  }
+
 
   return (
     <>
@@ -92,7 +115,7 @@ function DeckShow (props){
           <button onClick={favHandler}>{!favDeck ? "Add This Deck To Your Favorites" : "Remove This Deck From Favorites"}</button>
         </div>
         <div id="deck-show-wrapper">
-          <div id="deck-show-content" onClick={() => setFront(!front)} >
+          <div id="deck-show-content" onClick={(e) => clickHandler(e)}  >
             <p>{!front ? deck.cards[cardNum].front : deck.cards[cardNum].back}</p>
           </div>
           <div className="deck-buttons-wrapper" >

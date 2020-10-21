@@ -6,7 +6,7 @@ function ProfileCard({user}){
 
   return(
     <div id="profile-card-wrapper">
-      {user.img_url === null ? <img alt="" src={img} /> 
+      {user.img_url === null || user.img_url === "" ? <img alt="" src={img} /> 
       : <img alt="" src={user.img_url}/>}
       <h5>{user.name}</h5>
     </div>

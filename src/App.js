@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import { Route, withRouter } from 'react-router-dom'
 import Login from './components/Login'
-import SignUpWithRouter from './components/SignUp'
 import Home from './containers/Home'
 import Profile from './containers/Profile'
 import DeckForm from './components/DeckForm'

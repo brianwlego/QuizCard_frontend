@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import {addFav, removeFav, addScore, resetQuizScore} from '../redux/actions'
 
 
+
 function QuizShow(props){
   const [quiz, setQuiz] = useState({})
   const [questions, setQuestions] = useState([])
@@ -59,6 +60,7 @@ function QuizShow(props){
     }
     if (questions.length - 1 === answeredQuestions.length){
       setShowNewScore(true)
+      setViewQuiz(true)
     }
   }
   const shuffle = (array) => {
@@ -84,12 +86,22 @@ function QuizShow(props){
   }
   const next = () => {
     if(questionNum <= quiz.questions.length - 2){
-      setQuestionNum(questionNum + 1)
+      const show = document.getElementById('quiz-show-content')
+      show.className = "animate__animated animate__fadeOutLeft"
+      show.addEventListener('animationend', () => {
+        show.className = "animate__animated animate__fadeInRight"
+        setQuestionNum(questionNum + 1)
+      });
     }
   }
   const previous = () => {
     if (questionNum >= 1){
-      setQuestionNum(questionNum - 1)
+      const show = document.getElementById('quiz-show-content')
+      show.className = "animate__animated animate__fadeOutRight"
+      show.addEventListener('animationend', () => {
+        show.className = "animate__fadeInLeft animate__animated"
+        setQuestionNum(questionNum - 1)
+      });
     }
 
   }
@@ -158,7 +170,7 @@ function QuizShow(props){
     setWrong([])
     setChosen([])
     setShowNewScore(false)
-
+    setViewQuiz(false)
   }
   const renderNewScore = () => {
     const score = (right.length / questions.length) * 100
@@ -211,15 +223,16 @@ function QuizShow(props){
     setViewQuiz(false)
     props.resetQuizScore()
   }
-  // const shuffleQuestions = () => {
-  //   const newArray = shuffle(questionNumArray)
-  //   setQuestionNumArray(newArray)
-  //   // setNum(questionNumArray[questionNum])
-  // }
+  const shuffleQuestions = () => {
+    const a = [...questionNumArray]
+    const newArray = shuffle(a)
+    setViewQuiz(false)
+    setQuestionNumArray(newArray)
+    setAnsweredQuestions([])
+    setQuestionNum(0)
+  }
 
   let num = questionNumArray[questionNum]
-  console.log(questionNumArray)
-  console.log(num)
 
 
 
@@ -237,18 +250,18 @@ function QuizShow(props){
           </div>
           <div id="score-list-wrapper">
             <button onClick={favHandler}>{!favQuiz ? "Add This Quiz To Your Favorites" : "Remove This Quiz From Favorites"}</button>
-            {/* <button onClick={()=>shuffleQuestions()} >Shuffle Questions</button> */}
+            {!viewQuiz ? <button onClick={()=>shuffleQuestions()} >Shuffle Questions</button> : null}
           {showNewScore ? renderNewScore() : scores.length > 0 ? renderScores() :  <div id="quiz-scores">
                   <h4 id="no-scores">There aren't any recorded scores for this quiz</h4>
                 </div>}
           </div>
         </div> 
         <div id="quiz-show-wrapper">
-          <div id="quiz-show-content">
-            {viewQuiz ? <button id="close-button" onClick={()=>closeButton()}>&#10005;</button> : null}
-            {questions.length > 0 ? <h4>{questions[num].content}</h4> : null }
-            {answeredQuestions.includes(questionNum) ? renderAnswerChoices() : renderChoices()}
-          </div>
+            <div id="quiz-show-content">
+              {viewQuiz ? <button id="close-button" onClick={()=>closeButton()}>&#10005;</button> : null}
+              {questions.length > 0 ? <h4>{questions[num].content}</h4> : null }
+              {answeredQuestions.includes(questionNum) ? renderAnswerChoices() : renderChoices()}
+            </div>
           <div className="quiz-buttons-wrapper" >
             <button
               onClick={previous}

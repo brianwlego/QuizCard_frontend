@@ -18,6 +18,8 @@ function DeckForm(props){
   const [editCard, setEditCard] = useState(false)
   const [editCardId, setEditCardId] = useState("")
 
+  const [error, setError] = useState(false)
+
 
   const deckSubmitHandler = (e) => {
     e.preventDefault()
@@ -40,10 +42,14 @@ function DeckForm(props){
     setPhotoURL("")
   }
   const createDeckHandler = () => {
-    const deck = props.newDeck
-    deck.cards = props.newCardArray
-    props.finishCreateUpdateDeck(deck)
-    props.history.push('/profile')
+    if (props.newCardArray.length > 0){
+      const deck = props.newDeck
+      deck.cards = props.newCardArray
+      props.finishCreateUpdateDeck(deck)
+      props.history.push('/profile')
+    } else {
+      setError(true)
+    }
   }
   const cardSubmit = (e) => {
     const token = localStorage.getItem('token')
@@ -66,6 +72,7 @@ function DeckForm(props){
     setCardBack("")
     setEditCard(false)
     setEditCardId("")
+    setError(false)
   }
   const editHandler = (card) => {
     setCardFront(card.front)
@@ -140,7 +147,7 @@ function DeckForm(props){
             onChange={(e)=>handleFile(e)}
           />
           <label id="form-file-button" for="deckfile">{props.newDeck === "" ? "Select Deck Image" : "Change Image" }</label>
-          {photoURL !== "" ? <img id="photo-preview" src={photoURL} /> : props.newDeck !== "" ? <img id="photo-preview" src={props.newDeck.img_url} /> : null}
+          {photoURL !== "" ? <img id="photo-preview" src={photoURL} alt="" /> : props.newDeck !== "" ? <img id="photo-preview" src={props.newDeck.img_url} alt="" /> : null}
           <input type="submit" value={props.newDeck === "" ? "Create Deck" : "Update Deck"}/>
         </form>
     )
@@ -156,7 +163,7 @@ function DeckForm(props){
     props.history.push('/profile')
   }
 
-  // console.log(props.newCardArray)
+
 
   return(
     <div id="deck-form-wrapper">
@@ -180,9 +187,10 @@ function DeckForm(props){
           </div >
         </div>
         }
-      <div id="cards">
+      <div id="cards" style={props.newCardArray.length > 0 ? null : {display: "none"}}>
         {props.newCardArray.length > 0 ? renderCardArray() : null}
       </div>
+      <div id="card-form-wrapper">
         <form id="card-form" onSubmit={cardSubmit}>
           <input 
             type="text"
@@ -199,8 +207,10 @@ function DeckForm(props){
             onChange={(e)=>setCardBack(e.target.value)}
           />
           <input id="submit" type="submit" value={editCard ? "Update Card" : "Add Card To Deck"} />
-          <button onClick={createDeckHandler} >Finish Adding Cards & Create Deck</button>
         </form>
+          <button onClick={createDeckHandler} >Finish Adding Cards & Create Deck</button>
+          {error ? <p>Error. Deck must have at least one card</p> : null}
+        </div>  
       </>
       : 
       <div id="new-deck-form-wrapper">

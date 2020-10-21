@@ -24,6 +24,7 @@ function DeckCard (props) {
       props.history.push(`/home/deck/${props.deck.id}`)
     }
   }
+
   
   
   return (
