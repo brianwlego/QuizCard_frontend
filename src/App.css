@@ -75,6 +75,9 @@ div#sign-up{
   background: rgba(245, 245, 245, 0.988);
   z-index: 2;
 }
+#sign-up p{
+  margin: 0;
+}
 #sign-up h3{
   margin-top: 0;
 }
@@ -538,6 +541,9 @@ div#cards{
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.769);
 }
+#fav-button{
+  margin-bottom: 5px;
+}
 #quiz-content h3{
   margin: 5px 0;
   text-align: center;
@@ -641,6 +647,7 @@ div#cards{
   border: 1px solid lightgray;
 }
 #deck-show-content p{
+  font-size: x-large;
   text-align: center;
   max-width: 80%;
 }
@@ -828,6 +835,7 @@ div#cards{
   text-overflow: ellipsis;
 }
 #score-content button {
+  margin: 3px 0;
 	box-shadow:inset 0px 1px 0px 0px #ffffff;
 	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
 	background-color:#ffffff;

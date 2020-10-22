@@ -249,7 +249,7 @@ function QuizShow(props){
             <h4>{quiz.title}</h4>
           </div>
           <div id="score-list-wrapper">
-            <button onClick={favHandler}>{!favQuiz ? "Add This Quiz To Your Favorites" : "Remove This Quiz From Favorites"}</button>
+            <button onClick={favHandler} id="fav-button" >{!favQuiz ? "Add This Quiz To Your Favorites" : "Remove This Quiz From Favorites"}</button>
             {!viewQuiz ? <button onClick={()=>shuffleQuestions()} >Shuffle Questions</button> : null}
           {showNewScore ? renderNewScore() : scores.length > 0 ? renderScores() :  <div id="quiz-scores">
                   <h4 id="no-scores">There aren't any recorded scores for this quiz</h4>

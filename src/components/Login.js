@@ -24,11 +24,17 @@ function Login (props) {
     setPassword("")
   }
 
+  const renderErrors = () => {
+    return props.errors.map((error,index) => {
+      return <p key={index}>{error}</p>
+    })
+  }
+
 
   return(
     <div id="login">
       <h1>Welcome to QuizCard</h1>
-      {props.error !== "" ? <p>{props.error}</p> : null}
+      {props.errors.length === 1 ? !props.signup ? renderErrors() : null : null}
       <h2>Log In</h2>
       <form onSubmit={submitHandler}>
         <input 
@@ -60,7 +66,7 @@ const msp = (state) => {
   return {
     user: state.user,
     signup: state.signup,
-    error: state.error
+    errors: state.errors
   }
 }
 const mdp = (dispatch) => {

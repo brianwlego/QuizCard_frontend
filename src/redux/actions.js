@@ -14,7 +14,7 @@ export const loginUser = (userObj, history) => {
       .then(resp => resp.json())
       .then(data => {
         if (data.message){
-          dispatch({type: 'ERROR', payload: data.message})
+          dispatch({type: 'ERRORS', payload: [data.message]})
         } else if (data.user){
           localStorage.setItem("token", data.jwt);
           dispatch({type: 'ADD_USER', payload: data.user})
@@ -24,7 +24,7 @@ export const loginUser = (userObj, history) => {
   }
 }
 
-export const signUp = (newUser) => {
+export const signUp = (newUser, history) => {
   return function(dispatch){
     const configObj = {
       method: 'POST',
@@ -33,8 +33,14 @@ export const signUp = (newUser) => {
     fetch('http://localhost:3000/api/v1/users', configObj)
       .then(resp => resp.json())
       .then(data => {
-        localStorage.setItem("token", data.jwt)
-        dispatch({type: 'ADD_USER', payload: data.user})
+        if (data.errors){
+          dispatch({type: 'ERRORS', payload: data.errors})
+          console.log(data)
+        } else{
+          localStorage.setItem("token", data.jwt)
+          dispatch({type: 'ADD_USER', payload: data.user})
+          history.push('/home')
+        }
     })
   }
 }
@@ -127,7 +133,7 @@ export const addDecks = (deckMetaData) => {
     })
     .then(resp=>resp.json())
     .then(data => {
-      dispatch(({type: 'ADD_HOME_DECKS', payload: {homeDecks: data.quizzes, meta: data.meta}}))
+      dispatch(({type: 'ADD_HOME_DECKS', payload: {homeDecks: data.decks, meta: data.meta}}))
     })
   }
 }

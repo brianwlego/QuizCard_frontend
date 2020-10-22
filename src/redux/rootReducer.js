@@ -1,6 +1,6 @@
 export default (state = {
   user: "",
-  error: "",
+  errors: [],
   signup: false,
   skinnyDecks: [],
   skinnyQuizzes: [],
@@ -25,12 +25,13 @@ export default (state = {
       return {
         ...state,
         user: action.payload,
-        signup: false
+        signup: false,
+        errors: []
       }
-    case 'ERROR':
+    case 'ERRORS':
       return{
         ...state,
-        error: action.payload
+        errors: action.payload
       }  
     case 'SET_SIGNUP':
       return{

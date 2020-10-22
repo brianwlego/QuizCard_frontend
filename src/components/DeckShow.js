@@ -112,7 +112,7 @@ function DeckShow (props){
           <h3>Title</h3>
           <h4>{deck.title}</h4>
         </div>
-          <button onClick={favHandler}>{!favDeck ? "Add This Deck To Your Favorites" : "Remove This Deck From Favorites"}</button>
+          <button onClick={favHandler} id="fav-button" >{!favDeck ? "Add This Deck To Your Favorites" : "Remove This Deck From Favorites"}</button>
         </div>
         <div id="deck-show-wrapper">
           <div id="deck-show-content" onClick={(e) => clickHandler(e)}  >
