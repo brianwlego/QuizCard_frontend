@@ -5,6 +5,8 @@ import SearchForm from '../components/SearchForm'
 
 function NavBar(props){
 
+  const [randomNum, setRandomNum] = useState(1)
+
   const [path, setPath] = useState("")
 
   const logout = () => {
@@ -17,14 +19,16 @@ function NavBar(props){
     props.history.push('/home')
   }
   const random = () => {
-    const choose = [1,2][Math.floor(Math.random() * 2)]
-    if (choose === 1){
+    // const choose = [1,2][Math.floor(Math.random() * 2)]
+    if (randomNum === 1){
       const quiz = props.skinnyQuizzes[Math.floor(Math.random() * props.skinnyQuizzes.length)]
       setPath(`/home/quiz/${quiz.id}`)
+      setRandomNum(2)
       // props.history.push(`/home/quiz/${quiz.id}`)
-    } else if (choose === 2){
+    } else if (randomNum === 2){
       const deck = props.skinnyDecks[Math.floor(Math.random() * props.skinnyDecks.length)]
       setPath(`/home/deck/${deck.id}`)
+      setRandomNum(1)
       // props.history.push(`/home/deck/${deck.id}`)
     }
     
