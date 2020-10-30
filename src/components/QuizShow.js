@@ -26,7 +26,7 @@ function QuizShow(props){
   useEffect(()=>{
     const quizId = window.location.pathname.split('/')[3]
     const token = localStorage.getItem('token')
-    fetch(`http://localhost:3000/api/v1/quizzes/${quizId}`, {
+    fetch(`https://quizcard-backend.herokuapp.com/api/v1/quizzes/${quizId}`, {
       method: 'GET',
       headers: {
         "Authorization": `Bearer ${token}`,

@@ -12,7 +12,7 @@ function DeckShow (props){
   useEffect(()=>{
     const deckId = window.location.pathname.split('/')[3]
     const token = localStorage.getItem('token')
-    fetch(`http://localhost:3000/api/v1/decks/${deckId}`, {
+    fetch(`https://quizcard-backend.herokuapp.com/api/v1/decks/${deckId}`, {
       method: 'GET',
       headers: {
         "Authorization": `Bearer ${token}`,
