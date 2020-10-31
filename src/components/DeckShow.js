@@ -11,7 +11,7 @@ function DeckShow (props){
 
   useEffect(()=>{
     const deckId = window.location.pathname.split('/')[3]
-    fetch(`https://quizcard-backend.herokuapp.com/api/v1/decks/${deckId}`, {
+    fetch(`http://localhost:3000/api/v1/decks/${deckId}`, {
       method: 'GET',
       headers: {
         "Content-Type": "application/json",
@@ -59,7 +59,7 @@ function DeckShow (props){
         "Accepts": "application/json"
         }
       }
-      fetch(`https://quizcard-backend.herokuapp.com/api/v1/decks/${deck.id}/favorite`, configObj)
+      fetch(`http://localhost:3000/api/v1/decks/${deck.id}/favorite`, configObj)
       .then(resp=>resp.json())
       .then(data => {
         setFavDeck(data.fav_deck)
@@ -73,7 +73,7 @@ function DeckShow (props){
         "Accepts": "application/json"
         }
       }
-      fetch(`https://quizcard-backend.herokuapp.com/api/v1/decks/${deck.id}/unfavorite`, configObj)
+      fetch(`http://localhost:3000/api/v1/decks/${deck.id}/unfavorite`, configObj)
       .then(resp=>resp.json())
       .then(data => {
         if(data.success){
