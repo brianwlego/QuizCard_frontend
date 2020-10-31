@@ -115,7 +115,7 @@ function QuizShow(props){
         "Accepts": "application/json"
         }
       }
-      fetch(`http://localhost:3000/api/v1/quizzes/${quiz.id}/favorite`, configObj)
+      fetch(`https://quizcard-backend.herokuapp.com/v1/quizzes/${quiz.id}/favorite`, configObj)
       .then(resp=>resp.json())
       .then(data => {
         setFavQuiz(data.fav_quiz)
@@ -129,7 +129,7 @@ function QuizShow(props){
         "Accepts": "application/json"
         }
       }
-      fetch(`http://localhost:3000/api/v1/quizzes/${quiz.id}/unfavorite`, configObj)
+      fetch(`https://quizcard-backend.herokuapp.com/api/v1/quizzes/${quiz.id}/unfavorite`, configObj)
       .then(resp=>resp.json())
       .then(data => {
         if(data.success){
@@ -155,7 +155,7 @@ function QuizShow(props){
         chosen: chosen.toString()
       }})
     }
-    fetch(`http://localhost:3000/api/v1/quizzes/${quiz.id}/createscore`, configObj)
+    fetch(`https://quizcard-backend.herokuapp.com/api/v1/quizzes/${quiz.id}/createscore`, configObj)
     .then(resp=>resp.json())
     .then(data => {
       setScores([data.score, ...scores])

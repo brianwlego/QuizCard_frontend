@@ -61,7 +61,7 @@ function DeckShow (props){
         "Accepts": "application/json"
         }
       }
-      fetch(`http://localhost:3000/api/v1/decks/${deck.id}/favorite`, configObj)
+      fetch(`https://quizcard-backend.herokuapp.com/api/v1/decks/${deck.id}/favorite`, configObj)
       .then(resp=>resp.json())
       .then(data => {
         setFavDeck(data.fav_deck)
@@ -75,7 +75,7 @@ function DeckShow (props){
         "Accepts": "application/json"
         }
       }
-      fetch(`http://localhost:3000/api/v1/decks/${deck.id}/unfavorite`, configObj)
+      fetch(`https://quizcard-backend.herokuapp.com/api/v1/decks/${deck.id}/unfavorite`, configObj)
       .then(resp=>resp.json())
       .then(data => {
         if(data.success){
