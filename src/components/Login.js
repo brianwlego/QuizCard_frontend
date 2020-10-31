@@ -62,7 +62,7 @@ function Login (props) {
         />
       </form>
         <button onClick={props.setSignUp} >Click To Sign Up</button>
-        <button onClick={() => handleJustLooking()}>Just Looking? Click Here</button>
+        {/* <button onClick={() => handleJustLooking()}>Just Looking? Click Here</button> */}
       {props.signup ? <SignUpWithRouter /> : null }
     </div>
   )
