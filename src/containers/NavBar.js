@@ -74,4 +74,4 @@ const mdp = (dispatch) => {
 }
 
 
-export default connect(msp)(withRouter(NavBar))
+export default connect(msp, mdp)(withRouter(NavBar))
