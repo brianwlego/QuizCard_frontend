@@ -232,7 +232,7 @@ function QuizShow(props){
 
   let num = questionNumArray[questionNum]
 
-
+  console.log(quiz)
 
   return(
     <>

@@ -27,7 +27,7 @@ function App(props) {
 
   return (
     <div id="app-wrapper">
-      {props.user !== "" ? <NavBar />: null}
+      {props.user !== "" || props.justLooking ? <NavBar />: null}
       <Route path="/home" component={Home}/>
       <Route path="/profile/newdeck" exact component={DeckForm}/>
       <Route path="/profile/newquiz" exact component={QuizForm}/>
@@ -40,7 +40,8 @@ function App(props) {
 const msp = (state) => {
   return {
     user: state.user,
-    signup: state.signup
+    signup: state.signup,
+    justLooking: state.justLooking
   }
 }
 const mdp = (dispatch) => {
