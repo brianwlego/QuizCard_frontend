@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Redirect } from 'react-router-dom'
+import {setSignUp} from '../redux/actions'
 import SearchForm from '../components/SearchForm'
 
 function NavBar(props){
@@ -10,14 +11,15 @@ function NavBar(props){
   const [path, setPath] = useState("")
 
   const logout = () => {
-    localStorage.clear()
+    if (props.justLooking){
+      props.history.push('/login')
+      props.setSignUp()
+    } else {
+      localStorage.clear()
+    }
   }
   const profile = () => {
-    if(props.justLooking){
-      props.history.push('./signup')
-    } else if (!props.justLooking){
       props.history.push('/profile')
-    }
   }
   const home = () => {
     props.history.push('/home')
@@ -44,14 +46,14 @@ function NavBar(props){
       <Redirect to={path} /> : null}
       <div id="navbar-left">
         <p onClick={()=>home()}>QuizCard</p>
-        <p onClick={()=>profile()}>{props.justLooking ? "Sign Up" : "Profile"}</p>
+        <p onClick={()=>profile()} id={props.justLooking ? "hidden" : null } >Profile</p>
         <p onClick={()=>random()}>Random</p>
       </div>
       <div id="navbar-center">
         <SearchForm />
       </div>
       <div id="navbar-right">
-        <p onClick={logout}><a href='/login'>Log Out</a></p>
+        <p onClick={logout}><a href='/login'>{props.justLooking ? "Sign Up" : "Log Out" }</a></p>
       </div>
     </div>
   )
@@ -62,6 +64,12 @@ const msp = (state) => {
     justLooking: state.justLooking,
     skinnyQuizzes: state.skinnyQuizzes,
     skinnyDecks: state.skinnyDecks
+  }
+}
+
+const mdp = (dispatch) => {
+  return {
+    setSignUp: () => dispatch(setSignUp()),
   }
 }
 

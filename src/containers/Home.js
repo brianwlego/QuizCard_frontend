@@ -13,13 +13,14 @@ function Home (props) {
 
   
   useEffect(()=>{
+    
     if (props.skinnyQuizzes.length === 0){
       props.populateBrowse()
     }
     if (!props.populatedHome){
       props.populateHome()
     }
-    if (!props.populatedProfile){
+    if (!props.populatedProfile && props.user !== ""){
       props.populateProfile()
     }
   }, [])
@@ -82,6 +83,7 @@ function Home (props) {
 
 const msp = (state) => {
   return {
+    user: state.user,
     homeDecks: state.homeDecks,
     homeDeckMeta: state.homeDeckMeta,
     homeQuizzes: state.homeQuizzes,
