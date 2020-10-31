@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Redirect } from 'react-router-dom'
-import {setSignUp} from '../redux/actions'
 import SearchForm from '../components/SearchForm'
 
 function NavBar(props){
@@ -13,7 +12,6 @@ function NavBar(props){
   const logout = () => {
     if (props.justLooking){
       props.history.push('/login')
-      props.setSignUp()
     } else {
       localStorage.clear()
     }
@@ -53,7 +51,7 @@ function NavBar(props){
         <SearchForm />
       </div>
       <div id="navbar-right">
-        <p onClick={logout}><a href='/login'>{props.justLooking ? "Sign Up" : "Log Out" }</a></p>
+        <p onClick={logout}><a href='/login'>{props.justLooking ? "Log In/Sign Up" : "Log Out" }</a></p>
       </div>
     </div>
   )
@@ -67,11 +65,6 @@ const msp = (state) => {
   }
 }
 
-const mdp = (dispatch) => {
-  return {
-    setSignUp: () => dispatch(setSignUp()),
-  }
-}
 
 
-export default connect(msp, mdp)(withRouter(NavBar))
+export default connect(msp)(withRouter(NavBar))

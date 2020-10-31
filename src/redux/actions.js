@@ -37,6 +37,7 @@ export const signUp = (newUser, history) => {
     fetch('https://quizcard-backend.herokuapp.com/api/v1/users', configObj)
       .then(resp => resp.json())
       .then(data => {
+        console.log(data)
         if (data.errors){
           dispatch({type: 'ERRORS', payload: data.errors})
           console.log(data)
