@@ -93,7 +93,7 @@ function SignUp (props){
           hidden
           onChange={(e)=>handleFile(e)}
           />
-          <label id="form-file-button" for="userfile" >Add photo</label>
+          {/* <label id="form-file-button" for="userfile" >Add photo</label> */}
           {photoURL !== "" ? <img src={photoURL} alt="" id="photo-preview" /> : null}
           <input type="submit" value="Sign Up" />
         </form>

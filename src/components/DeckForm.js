@@ -146,7 +146,7 @@ function DeckForm(props){
             hidden
             onChange={(e)=>handleFile(e)}
           />
-          <label id="form-file-button" for="deckfile">{props.newDeck === "" ? "Select Deck Image" : "Change Image" }</label>
+          {/* <label id="form-file-button" for="deckfile">{props.newDeck === "" ? "Select Deck Image" : "Change Image" }</label> */}
           {photoURL !== "" ? <img id="photo-preview" src={photoURL} alt="" /> : props.newDeck !== "" ? <img id="photo-preview" src={props.newDeck.img_url} alt="" /> : null}
           <input type="submit" value={props.newDeck === "" ? "Create Deck" : "Update Deck"}/>
         </form>
