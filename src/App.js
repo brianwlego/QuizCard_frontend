@@ -7,6 +7,7 @@ import DeckForm from './components/DeckForm'
 import QuizForm from './components/QuizForm'
 import NavBar from './containers/NavBar'
 import './App.css';
+import './AppScale.css'
 import { connect } from 'react-redux';
 import { checkToken } from './redux/actions'
 

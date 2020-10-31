@@ -2,6 +2,7 @@ export default (state = {
   user: "",
   errors: [],
   signup: false,
+  justLooking: false,
   skinnyDecks: [],
   skinnyQuizzes: [],
   homeDecks: [],
@@ -26,6 +27,7 @@ export default (state = {
         ...state,
         user: action.payload,
         signup: false,
+        justLooking: false,
         errors: []
       }
     case 'ERRORS':
@@ -36,8 +38,15 @@ export default (state = {
     case 'SET_SIGNUP':
       return{
         ...state,
-        signup: !state.signup
+        signup: !state.signup,
+        justLooking: false
       }
+    case 'SET_JUST_LOOKING':
+      return{
+        ...state,
+        justLooking: true
+      }
+
     case 'POPULATE_BROWSE':
       return{
         ...state,

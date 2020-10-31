@@ -25,11 +25,9 @@ function QuizShow(props){
 
   useEffect(()=>{
     const quizId = window.location.pathname.split('/')[3]
-    const token = localStorage.getItem('token')
     fetch(`https://quizcard-backend.herokuapp.com/api/v1/quizzes/${quizId}`, {
       method: 'GET',
       headers: {
-        "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json",
         "Accepts": "application/json"
       }
@@ -115,7 +113,7 @@ function QuizShow(props){
         "Accepts": "application/json"
         }
       }
-      fetch(`https://quizcard-backend.herokuapp.com/v1/quizzes/${quiz.id}/favorite`, configObj)
+      fetch(`https://quizcard-backend.herokuapp.com/api/v1/quizzes/${quiz.id}/favorite`, configObj)
       .then(resp=>resp.json())
       .then(data => {
         setFavQuiz(data.fav_quiz)
@@ -177,7 +175,7 @@ function QuizShow(props){
     return(
         <div id="score-content">
           <h3>Score: {score.toFixed(2)}%</h3>
-          <div id="score-button-wrapper">
+          <div id={props.justLooking ? "hidden" : "score-button-wrapper"}>
             <button onClick={()=>recordScore(score)}>Record Score?</button>
             <button onClick={()=>resetQuiz()}>Retake Quiz</button>
           </div>
@@ -249,7 +247,7 @@ function QuizShow(props){
             <h4>{quiz.title}</h4>
           </div>
           <div id="score-list-wrapper">
-            <button onClick={favHandler} id="fav-button" >{!favQuiz ? "Add This Quiz To Your Favorites" : "Remove This Quiz From Favorites"}</button>
+            <button onClick={favHandler} id={props.justLooking ? "hidden" : "fav-button"} >{!favQuiz ? "Add This Quiz To Your Favorites" : "Remove This Quiz From Favorites"}</button>
             {!viewQuiz ? <button onClick={()=>shuffleQuestions()} >Shuffle Questions</button> : null}
           {showNewScore ? renderNewScore() : scores.length > 0 ? renderScores() :  <div id="quiz-scores">
                   <h4 id="no-scores">There aren't any recorded scores for this quiz</h4>
@@ -286,6 +284,7 @@ function QuizShow(props){
 const msp = (state) => {
   return {
     quizScore: state.quizScore,
+    justLooking: state.justLooking
   }
 }
 

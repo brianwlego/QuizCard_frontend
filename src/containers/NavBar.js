@@ -13,7 +13,11 @@ function NavBar(props){
     localStorage.clear()
   }
   const profile = () => {
-    props.history.push('/profile')
+    if(props.justLooking){
+      props.history.push('./signup')
+    } else if (!props.justLooking){
+      props.history.push('/profile')
+    }
   }
   const home = () => {
     props.history.push('/home')
@@ -40,7 +44,7 @@ function NavBar(props){
       <Redirect to={path} /> : null}
       <div id="navbar-left">
         <p onClick={()=>home()}>QuizCard</p>
-        <p onClick={()=>profile()}>Profile</p>
+        <p onClick={()=>profile()}>{props.justLooking ? "Sign Up" : "Profile"}</p>
         <p onClick={()=>random()}>Random</p>
       </div>
       <div id="navbar-center">
@@ -55,6 +59,7 @@ function NavBar(props){
 
 const msp = (state) => {
   return {
+    justLooking: state.justLooking,
     skinnyQuizzes: state.skinnyQuizzes,
     skinnyDecks: state.skinnyDecks
   }

@@ -10,7 +10,10 @@ body{
 
 :root {
   --animate-duration: 300ms;
+}
 
+#hidden{
+  display: none;
 }
 
 

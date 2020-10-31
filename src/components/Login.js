@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { connect } from 'react-redux';
-import { loginUser, setSignUp, populateBrowse, populateHome } from '../redux/actions'
+import { loginUser, setSignUp, setJustLooking, populateBrowse, populateHome } from '../redux/actions'
 import SignUpWithRouter from './SignUp'
 
 function Login (props) {
@@ -22,6 +22,11 @@ function Login (props) {
     props.loginUser(user, props.history)
     setEmail("")
     setPassword("")
+  }
+
+  const handleJustLooking = () => {
+    props.setJustLooking()
+    props.history.push('./home')
   }
 
   const renderErrors = () => {
@@ -57,6 +62,7 @@ function Login (props) {
         />
       </form>
         <button onClick={props.setSignUp} >Click To Sign Up</button>
+        <button onClick={() => handleJustLooking()}>Just Looking? Click Here</button>
       {props.signup ? <SignUpWithRouter /> : null }
     </div>
   )
@@ -73,6 +79,7 @@ const mdp = (dispatch) => {
   return {
     loginUser: (user, history) => dispatch(loginUser(user, history)),
     setSignUp: () => dispatch(setSignUp()),
+    setJustLooking: () => dispatch(setJustLooking()),
     populateBrowse: () => dispatch(populateBrowse()),
     populateHome: () => dispatch(populateHome())
   }

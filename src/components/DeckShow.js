@@ -11,11 +11,9 @@ function DeckShow (props){
 
   useEffect(()=>{
     const deckId = window.location.pathname.split('/')[3]
-    const token = localStorage.getItem('token')
     fetch(`https://quizcard-backend.herokuapp.com/api/v1/decks/${deckId}`, {
       method: 'GET',
       headers: {
-        "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json",
         "Accepts": "application/json"
       }
@@ -112,7 +110,7 @@ function DeckShow (props){
           <h3>Title</h3>
           <h4>{deck.title}</h4>
         </div>
-          <button onClick={favHandler} id="fav-button" >{!favDeck ? "Add This Deck To Your Favorites" : "Remove This Deck From Favorites"}</button>
+          <button onClick={favHandler} id={props.justLooking ? "hidden" : "fav-button"} >{!favDeck ? "Add This Deck To Your Favorites" : "Remove This Deck From Favorites"}</button>
         </div>
         <div id="deck-show-wrapper">
           <div id="deck-show-content" onClick={(e) => clickHandler(e)}  >
@@ -140,6 +138,12 @@ function DeckShow (props){
   )
 }
 
+const msp = (state) => {
+  return {
+    justLooking: state.justLooking
+  }
+}
+
 const mdp = (dispatch) => {
   return {
     addFav: (newFav) => dispatch(addFav(newFav)),
@@ -147,4 +151,4 @@ const mdp = (dispatch) => {
   }
 }
 
-export default connect(null, mdp)(DeckShow)
+export default connect(msp, mdp)(DeckShow)

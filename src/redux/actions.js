@@ -24,6 +24,10 @@ export const loginUser = (userObj, history) => {
   }
 }
 
+export const setJustLooking = () => {
+  return { type: 'SET_JUST_LOOKING' }
+}
+
 export const signUp = (newUser, history) => {
   return function(dispatch){
     const configObj = {

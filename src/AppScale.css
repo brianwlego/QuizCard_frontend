@@ -1,0 +1,13 @@
+@media screen and (max-width: 375px) {
+  
+  #quiz-list-wrapper{
+    display: none;
+  }
+  #deck-list-wrapper{
+    display: none;
+  }
+  #nav-bar-center{
+    display: none;
+  }
+  
+}
