@@ -183,7 +183,7 @@ function QuizForm(props){
             hidden
             onChange={(e)=>handleFile(e)}
           />
-          {/* <label id="form-file-button" for="quizfile">{props.newQuiz === "" ? "Select Quiz Image" : "Change Image" }</label> */}
+          <label id="form-file-button" for="quizfile">{props.newQuiz === "" ? "Select Quiz Image" : "Change Image" }</label>
           {photoURL !== "" ? <img id="photo-preview" src={photoURL} alt="" /> : props.newQuiz !== "" ? <img id="photo-preview" src={props.newQuiz.img_url} alt="" /> : null}
           <input type="submit" value={props.newQuiz === "" ? "Create Quiz" : "Update Quiz"}/>
         </form>
