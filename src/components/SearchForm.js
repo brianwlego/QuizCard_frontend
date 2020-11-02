@@ -43,7 +43,7 @@ function SearchForm(props){
   
   return(
     <div id="search-wrapper">
-      <form id="search-form">
+      <form id="search-form" style={props.justLooking ? {marginRight: "2em"} : null}>
         <input
           type="text"
           placeholder="Search..."
@@ -61,6 +61,7 @@ function SearchForm(props){
 
 const msp = (state) => {
   return{
+    justLooking: state.justLooking,
     skinnyQuizzes: state.skinnyQuizzes,
     skinnyDecks: state.skinnyDecks
   }
