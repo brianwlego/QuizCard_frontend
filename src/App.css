@@ -333,7 +333,7 @@ div#login{
 }
 #quiz-list-wrapper{
   text-align: center;
-  height: 30em;
+  height: 83.5vh;
   width: 40%;
   max-width: auto;
   display: inline;
@@ -341,7 +341,7 @@ div#login{
 }
 #deck-list-wrapper{
   text-align: center;
-  height: 30em;
+  height: 83.5vh;
   width: 40%;
   display: inline;
   overflow: scroll;
@@ -1005,7 +1005,7 @@ div#cards{
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 30em;
+  height: 83.5vh;
 }
 #cat-list{
   display: flex;
