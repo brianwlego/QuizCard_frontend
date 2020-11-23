@@ -7,6 +7,7 @@ import {addFav, removeFav, addScore, resetQuizScore} from '../redux/actions'
 
 function QuizShow(props){
   const [quiz, setQuiz] = useState({})
+
   const [questions, setQuestions] = useState([])
   const [scores, setScores] = useState([])
   const [answeredQuestions, setAnsweredQuestions] = useState(props.quizScore !== "" ? props.quizScore.right.concat(props.quizScore.wrong) : [])
@@ -20,8 +21,12 @@ function QuizShow(props){
   const [right, setRight] = useState(props.quizScore !== "" ? props.quizScore.right : [])
   const [wrong, setWrong] = useState(props.quizScore !== "" ? props.quizScore.wrong : [])
   const [chosen, setChosen] = useState(props.quizScore !== "" ? props.quizScore.chosen : [])
-
+  
   const [showNewScore, setShowNewScore] = useState(false)
+
+
+
+
 
   useEffect(()=>{
     const quizId = window.location.pathname.split('/')[3]
@@ -43,10 +48,19 @@ function QuizShow(props){
         setFavQuiz(data.fav_quiz)
       }
       setQuiz(data.quiz)
-      setQuestions(data.quiz.questions)
+
+      setQuestions(shuffleQuestionChoices(data.quiz.questions));
       setScores(data.quiz.scores)
     })
   }, [])
+
+  const shuffleQuestionChoices = (questionsArray) => {
+    for (let i = 0; i < questionsArray.length; i++){
+      questionsArray[i].choices = shuffle(questionsArray[i].choices);
+    }
+    return questionsArray;
+  }
+
 
   const handleClick = (choice) => {
     setAnsweredQuestions([...answeredQuestions, questionNum])
@@ -75,12 +89,13 @@ function QuizShow(props){
   const renderChoices = () => {
     const num = questionNumArray[questionNum]
     const choices = quiz.questions[num].choices
-    return shuffle(choices).map(choice => <Choice key={choice.id} choice={choice} handleClick={handleClick} chosen="" styling='choice-wrapper'/> )
+    const shuffledChoices = choices.map(choice => <Choice key={choice.id} choice={choice} handleClick={handleClick} chosen="" styling='choice-wrapper'/> )
+    return shuffledChoices;
   }
   const renderAnswerChoices = () => {
     const num = questionNumArray[questionNum]
-    return quiz.questions[num].choices.map(choice => {
-      return <Choice key={choice.id} choice={choice} handleClick={""} styling={choice.answer ? "right-answer" : "wrong-answer"} chosen={chosen.includes(choice.id) ? "chosen" : ""} /> })
+    const choices= quiz.questions[num].choices.map(choice => <Choice key={choice.id} choice={choice} handleClick={""} styling={choice.answer ? "right-answer" : "wrong-answer"} chosen={chosen.includes(choice.id) ? "chosen" : ""} /> )
+    return choices;
   }
   const next = () => {
     if(questionNum <= quiz.questions.length - 2){
@@ -232,7 +247,6 @@ function QuizShow(props){
 
   let num = questionNumArray[questionNum]
 
-  console.log(quiz)
 
   return(
     <>
