@@ -44,7 +44,7 @@ function Login (props) {
       <form onSubmit={submitHandler}>
         <input 
           type="text"
-          placeholder="Email..."
+          placeholder="Deshawn..."
           name="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}

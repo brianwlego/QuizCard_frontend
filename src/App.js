@@ -6,6 +6,7 @@ import Profile from './containers/Profile'
 import DeckForm from './components/DeckForm'
 import QuizForm from './components/QuizForm'
 import NavBar from './containers/NavBar'
+import Wakeup from './components/Wakeup'
 import './App.css';
 import './AppScale.css'
 import { connect } from 'react-redux';
@@ -33,6 +34,7 @@ function App(props) {
       <Route path="/profile/newquiz" exact component={QuizForm}/>
       <Route path="/profile" exact component={Profile}/>
       <Route path="/login" component={Login}/>
+      <Route path="/wakeup" exact component={Wakeup}/>
     </div>
   );
 }
