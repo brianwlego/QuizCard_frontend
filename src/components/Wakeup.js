@@ -1,7 +1,7 @@
 import React from 'react'
 
 function Wakeup(){
-  return JSON.stringify({msg: "QuizCard-frontend, I'm awake!"})
+  return <code>{JSON.stringify({msg: "QuizCard-frontend, I'm awake!"})}</code>
 }
 
 export default Wakeup;
