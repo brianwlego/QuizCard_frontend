@@ -25,10 +25,11 @@ function App(props) {
     }
   }, [])
 
+  console.log(props)
 
   return (
     <div id="app-wrapper">
-      {props.user !== "" || props.justLooking ? <NavBar />: null}
+      {props.location.pathname !== '/login' ? <NavBar />: null}
       <Route path="/home" component={Home}/>
       <Route path="/profile/newdeck" exact component={DeckForm}/>
       <Route path="/profile/newquiz" exact component={QuizForm}/>
